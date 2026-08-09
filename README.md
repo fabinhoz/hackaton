@@ -1,4 +1,4 @@
-# 🧠 FinSight AI
+# FinSight AI
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-6.0-blue?style=flat-square" alt="Version">
