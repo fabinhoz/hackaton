@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinSight AI — Documentação Visual v6.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter','system-ui','sans-serif'] },
+      colors: {
+        primary: {50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81'},
+        accent: {50:'#fdf4ff',100:'#fae8ff',200:'#f5d0fe',300:'#f0abfc',400:'#e879f9',500:'#d946ef',600:'#c026d3',700:'#a21caf'},
+        success:'#10b981',warning:'#f59e0b',danger:'#ef4444',info:'#3b82f6'
+      },
+      animation: {
+        'fade-in':'fadeIn 0.6s ease-out','slide-up':'slideUp 0.6s ease-out',
+        'pulse-slow':'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+        'float':'float 6s ease-in-out infinite','glow':'glow 2s ease-in-out infinite alternate'
+      },
+      keyframes: {
+        fadeIn:{'0%':{opacity:'0'},'100%':{opacity:'1'}},
+        slideUp:{'0%':{opacity:'0',transform:'translateY(30px)'},'100%':{opacity:'1',transform:'translateY(0)'}},
+        float:{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-12px)'}},
+        glow:{'0%':{boxShadow:'0 0 20px rgba(99,102,241,0.3)'},'100%':{boxShadow:'0 0 40px rgba(168,85,247,0.5)'}}
+      }
+    }
+  }
+}
+</script>
+<style>
+body{font-family:'Inter',system-ui,sans-serif;}
+.glass{background:rgba(255,255,255,0.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.4);}
+.dark .glass{background:rgba(15,23,42,0.75);border:1px solid rgba(255,255,255,0.08);}
+.glass-card{background:rgba(255,255,255,0.9);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.5);box-shadow:0 8px 32px rgba(0,0,0,0.06);}
+.dark .glass-card{background:rgba(30,41,59,0.85);border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px rgba(0,0,0,0.3);}
+.gradient-text{background:linear-gradient(135deg,#6366f1,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gradient-bg-animated{background:linear-gradient(-45deg,#667eea,#764ba2,#f093fb,#4facfe);background-size:400% 400%;animation:gradientShift 15s ease infinite;}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.code-block{background:#0f172a;color:#e2e8f0;font-family:'JetBrains Mono',monospace;font-size:13px;padding:16px;border-radius:12px;overflow-x:auto;position:relative;}
+.copy-btn{position:absolute;top:8px;right:8px;padding:6px 12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#94a3b8;font-size:11px;cursor:pointer;transition:all 0.2s;}
+.copy-btn:hover{background:rgba(99,102,241,0.3);color:#fff;}
+.tab-active{background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;box-shadow:0 4px 20px rgba(99,102,241,0.35);}
+.arch-node{transition:all 0.3s ease;}
+.arch-node:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 40px rgba(99,102,241,0.25);}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;animation:pulse 2s infinite;}
+.scrollbar-hide::-webkit-scrollbar{display:none;}
+.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}
+.toast-container{position:fixed;top:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:12px;pointer-events:none;}
+.toast{pointer-events:auto;padding:16px 20px;border-radius:16px;font-size:14px;font-weight:600;max-width:360px;transform:translateX(120%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),opacity 0.3s;opacity:0;box-shadow:0 10px 40px rgba(0,0,0,0.15);display:flex;align-items:center;gap:12px;}
+.toast.show{transform:translateX(0);opacity:1;}
+.toast-success{background:rgba(16,185,129,0.95);color:white;backdrop-filter:blur(12px);}
+.toast-error{background:rgba(239,68,68,0.95);color:white;backdrop-filter:blur(12px);}
+.endpoint-card{transition:all 0.3s ease;border-left:4px solid transparent;}
+.endpoint-card:hover{border-left-color:#6366f1;transform:translateX(4px);}
+.trouble-card{cursor:pointer;transition:all 0.3s ease;}
+.trouble-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+.trouble-card.active .trouble-body{max-height:500px;padding-top:16px;}
+.trouble-body{max-height:0;overflow:hidden;transition:all 0.4s ease;}
+.metric-card{position:relative;overflow:hidden;}
+.metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6366f1,#a855f7);}
+.folder-tree{line-height:1.6;}
+.folder-tree .folder{color:#f59e0b;font-weight:600;}
+.folder-tree .file{color:#38bdf8;}
+.folder-tree .comment{color:#64748b;font-style:italic;}
+.ip-input-wrapper{transition:all 0.3s ease;}
+.ip-input-wrapper:focus-within{box-shadow:0 0 0 3px rgba(99,102,241,0.3);}
+.ip-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(99,102,241,0.15);color:#6366f1;border:1px solid rgba(99,102,241,0.2);}
+.dark .ip-badge{background:rgba(99,102,241,0.25);color:#a5b4fc;border-color:rgba(99,102,241,0.3);}
+</style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-500">
+
+<div id="toast-container" class="toast-container"></div>
+
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+  <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary-400/15 rounded-full blur-[100px] animate-float"></div>
+  <div class="absolute top-1/3 -left-32 w-[400px] h-[400px] bg-accent-400/10 rounded-full blur-[100px] animate-float" style="animation-delay:2s"></div>
+  <div class="absolute -bottom-32 right-1/4 w-[450px] h-[450px] bg-purple-400/10 rounded-full blur-[100px] animate-float" style="animation-delay:4s"></div>
+</div>
+
+<div class="relative z-10 max-w-7xl mx-auto px-4 py-8 lg:py-12">
+
+<header class="text-center mb-12 animate-fade-in">
+  <div class="inline-flex items-center justify-center w-24 h-24 mb-6 rounded-3xl gradient-bg-animated shadow-2xl shadow-primary-500/30 animate-glow">
+    <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/>
+    </svg>
+  </div>
+  <h1 class="text-5xl lg:text-6xl font-black mb-3 tracking-tight"><span class="gradient-text">FinSight AI</span></h1>
+  <p class="text-slate-500 dark:text-slate-400 text-xl font-medium max-w-2xl mx-auto">Documentação — Assistente Inteligente de Saúde Financeira</p>
+  <div class="mt-6 flex flex-wrap justify-center gap-3">
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur text-sm font-bold text-primary-600 dark:text-primary-400 shadow-sm border border-primary-100 dark:border-primary-900/30">
+      <span class="status-dot bg-emerald-400"></span> v6.0
+    </span>
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur text-sm font-bold text-slate-600 dark:text-slate-300 shadow-sm border border-slate-200 dark:border-slate-700">
+      <i data-lucide="users" class="w-4 h-4"></i> G9-BR-TEAM-20
+    </span>
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur text-sm font-bold text-accent-600 dark:text-accent-400 shadow-sm border border-accent-100 dark:border-accent-900/30">
+      <i data-lucide="cloud" class="w-4 h-4"></i> Hackathon OCI 2026
+    </span>
+  </div>
+
+  <!-- CONFIGURADOR DE IP OCI -->
+  <div class="mt-8 max-w-xl mx-auto">
+    <div class="glass rounded-2xl p-1.5 ip-input-wrapper">
+      <div class="flex flex-col sm:flex-row gap-2">
+        <div class="flex-1 relative">
+          <i data-lucide="globe" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+          <input 
+            type="text" 
+            id="oci-ip-input" 
+            placeholder="Digite seu IP OCI (ex: 203.0.113.10)" 
+            class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
+            autocomplete="off"
+          >
+        </div>
+        <button onclick="aplicarIP()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-primary-500 to-purple-600 text-white text-sm font-bold shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i> Aplicar
+        </button>
+        <button onclick="toggleTema()" id="btn-tema" class="px-4 py-3 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-bold hover:bg-white dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+          <i data-lucide="sun" class="w-4 h-4" id="icon-tema"></i> <span id="text-tema">Tema</span>
+        </button>
+      </div>
+    </div>
+    <p class="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center">Dica: insira seu IP acima para atualizar todos os comandos e links automaticamente.</p>
+    <div id="ip-status" class="mt-2 flex justify-center gap-2 flex-wrap"></div>
+  </div>
+</header>
+
+<div class="glass rounded-2xl p-2 mb-10 flex gap-2 overflow-x-auto scrollbar-hide sticky top-4 z-50 shadow-lg">
+  <button onclick="switchTab('visao')" id="tab-visao" class="tab-btn tab-active flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="eye" class="w-4 h-4"></i> Visão Geral
+  </button>
+  <button onclick="switchTab('regras')" id="tab-regras" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="scale" class="w-4 h-4"></i> Regras de Negócio
+  </button>
+  <button onclick="switchTab('arquitetura')" id="tab-arquitetura" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="layers" class="w-4 h-4"></i> Arquitetura
+  </button>
+  <button onclick="switchTab('oci-vm')" id="tab-oci-vm" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="cloud" class="w-4 h-4"></i> VM OCI
+  </button>
+  <button onclick="switchTab('instalacao')" id="tab-instalacao" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="download" class="w-4 h-4"></i> Instalação
+  </button>
+  <button onclick="switchTab('api')" id="tab-api" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="code-2" class="w-4 h-4"></i> API
+  </button>
+  <button onclick="switchTab('guia')" id="tab-guia" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="book-open" class="w-4 h-4"></i> Guia de Uso
+  </button>
+  <button onclick="switchTab('troubleshoot')" id="tab-troubleshoot" class="tab-btn flex-1 py-3 px-5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 flex items-center justify-center gap-2 whitespace-nowrap min-w-[130px]">
+    <i data-lucide="wrench" class="w-4 h-4"></i> Problemas
+  </button>
+</div>
+
+<!-- ==================== VISÃO GERAL ==================== -->
+<div id="content-visao" class="tab-content space-y-8">
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="glass-card rounded-3xl p-8 text-center arch-node animate-slide-up" style="animation-delay:0.1s">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+        <i data-lucide="brain-circuit" class="w-8 h-8 text-white"></i>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">IA que Entende</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Classifica automaticamente cada gasto em 7 categorias usando TF-IDF + modelo treinado. Se os modelos falharem, um <strong>fallback heurístico</strong> assume com regras de negócio inteligentes.</p>
+    </div>
+    <div class="glass-card rounded-3xl p-8 text-center arch-node animate-slide-up" style="animation-delay:0.2s">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center shadow-lg shadow-primary-500/25">
+        <i data-lucide="activity" class="w-8 h-8 text-white"></i>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">Score 0-1000</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Calcula sua saúde financeira em escala numérica com <strong>explicações claras</strong> do porquê do resultado. Não é caixa-preta: você sabe exatamente o que pesou na nota.</p>
+    </div>
+    <div class="glass-card rounded-3xl p-8 text-center arch-node animate-slide-up" style="animation-delay:0.3s">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/25">
+        <i data-lucide="lightbulb" class="w-8 h-8 text-white"></i>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">Recomendações</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Dicas personalizadas baseadas no seu perfil (Saudável, Em Observação ou Em Risco) e nas proporções reais de cada categoria de gasto.</p>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8 animate-slide-up">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
+        <i data-lucide="sparkles" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">O que é o FinSight AI?</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Em 30 segundos você entende tudo</p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">1</span>
+          </div>
+          <div>
+            <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">Você informa seus dados</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Renda, endividamento, poupança e transações do mês.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">2</span>
+          </div>
+          <div>
+            <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">A IA analisa tudo</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Classifica gastos, calcula score e identifica seu perfil financeiro.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+          <div class="w-8 h-8 rounded-lg bg-accent-100 dark:bg-accent-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span class="text-accent-600 dark:text-accent-400 font-bold text-sm">3</span>
+          </div>
+          <div>
+            <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">Você recebe o relatório</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Gráficos, recomendações, alertas de metas, explicabilidade e histórico.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-primary-50 to-purple-50 dark:from-slate-800 dark:to-slate-800 p-6 flex flex-col justify-center">
+        <h4 class="font-bold text-slate-700 dark:text-slate-300 mb-4 text-center">Perfis Financeiros</h4>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
+            <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">S</div>
+            <div>
+              <p class="font-bold text-emerald-700 dark:text-emerald-400 text-sm">Saudável (700-1000)</p>
+              <p class="text-xs text-emerald-600 dark:text-emerald-500">Hábitos excelentes, margem confortável</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+            <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-sm">O</div>
+            <div>
+              <p class="font-bold text-amber-700 dark:text-amber-400 text-sm">Em Observação (400-699)</p>
+              <p class="text-xs text-amber-600 dark:text-amber-500">Atenção necessária, ajustes recomendados</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
+            <div class="w-10 h-10 rounded-full bg-rose-500 flex items-center justify-center text-white font-bold text-sm">R</div>
+            <div>
+              <p class="font-bold text-rose-700 dark:text-rose-400 text-sm">Em Risco (0-399)</p>
+              <p class="text-xs text-rose-600 dark:text-rose-500">Situação crítica, ação urgente necessária</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8 animate-slide-up">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+        <i data-lucide="rocket" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Acesse Agora</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4">
+      <a href="http://SEU_IP_OCI" target="_blank" class="group p-5 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 text-white hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:-translate-y-1">
+        <div class="flex items-center justify-between mb-3">
+          <i data-lucide="layout-dashboard" class="w-8 h-8 opacity-80"></i>
+          <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+        </div>
+        <p class="font-bold text-lg">Frontend</p>
+        <p class="text-sm opacity-80">Interface gráfica completa</p>
+        <p class="text-xs font-mono mt-2 opacity-60 ip-display">SEU_IP_OCI</p>
+      </a>
+      <a href="http://SEU_IP_OCI/docs" target="_blank" class="group p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:shadow-xl hover:shadow-emerald-500/30 transition-all hover:-translate-y-1">
+        <div class="flex items-center justify-between mb-3">
+          <i data-lucide="file-code" class="w-8 h-8 opacity-80"></i>
+          <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+        </div>
+        <p class="font-bold text-lg">API Docs</p>
+        <p class="text-sm opacity-80">Documentação Swagger interativa</p>
+        <p class="text-xs font-mono mt-2 opacity-60">/docs</p>
+      </a>
+      <a href="http://SEU_IP_OCI/health" target="_blank" class="group p-5 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white hover:shadow-xl hover:shadow-amber-500/30 transition-all hover:-translate-y-1">
+        <div class="flex items-center justify-between mb-3">
+          <i data-lucide="heart-pulse" class="w-8 h-8 opacity-80"></i>
+          <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+        </div>
+        <p class="font-bold text-lg">Health Check</p>
+        <p class="text-sm opacity-80">Status do sistema em tempo real</p>
+        <p class="text-xs font-mono mt-2 opacity-60">/health</p>
+      </a>
+    </div>
+    <p class="text-xs text-slate-500 dark:text-slate-500 mt-4 text-center"><strong>Nota:</strong> Substitua <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded ip-display">SEU_IP_OCI</code> pelo IP público da sua VM (ex: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">203.0.113.10</code>).</p>
+  </div>
+
+  <div class="grid md:grid-cols-4 gap-4">
+    <div class="metric-card glass-card rounded-2xl p-5 text-center">
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Categorias</p>
+      <p class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">7</p>
+      <p class="text-xs text-slate-500 mt-1">Alimentação, Transporte, Saúde, Moradia, Educação, Lazer, Serviços</p>
+    </div>
+    <div class="metric-card glass-card rounded-2xl p-5 text-center">
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Score</p>
+      <p class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">0-1000</p>
+      <p class="text-xs text-slate-500 mt-1">Escala numérica de saúde financeira</p>
+    </div>
+    <div class="metric-card glass-card rounded-2xl p-5 text-center">
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Idiomas</p>
+      <p class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">3</p>
+      <p class="text-xs text-slate-500 mt-1">Português, English, Español</p>
+    </div>
+    <div class="metric-card glass-card rounded-2xl p-5 text-center">
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Modelos ML</p>
+      <p class="text-3xl font-extrabold text-slate-800 dark:text-slate-100">5</p>
+      <p class="text-xs text-slate-500 mt-1">TF-IDF, Categoria, Perfil, Codificadores</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== REGRAS DE NEGÓCIO ==================== -->
+<div id="content-regras" class="tab-content hidden space-y-8">
+
+  <!-- FLUXO DE DECISÃO -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+        <i data-lucide="git-branch" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Fluxo de Decisão da IA</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Como o sistema decide o seu perfil e o seu score</p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/10 border border-primary-200 dark:border-primary-800">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-primary-700 dark:text-primary-400 mb-3">
+          <i data-lucide="brain" class="w-5 h-5"></i> Passo 1: Perfil Financeiro
+        </h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          O perfil (<strong>Saudável</strong>, <strong>Em Observação</strong> ou <strong>Em Risco</strong>) é determinado primeiro pelo modelo de Machine Learning treinado. Se os modelos não estiverem disponíveis, o <strong>fallback heurístico</strong> assume usando regras de pontuação. O perfil é a <em>classificação qualitativa</em> da sua situação financeira.
+        </p>
+      </div>
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/10 border border-emerald-200 dark:border-emerald-800">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-3">
+          <i data-lucide="gauge" class="w-5 h-5"></i> Passo 2: Score Numérico (0-1000)
+        </h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          O score é uma <em>métrica quantitativa derivada</em> calculada por uma fórmula ponderada. Ele recebe um <strong>bônus de perfil</strong> (+150, +70 ou 0) após a classificação, mas <strong>não é o critério que define o perfil</strong>. Serve para acompanhar a evolução da sua saúde financeira ao longo do tempo.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLASSIFICAÇÃO DE TRANSAÇÕES -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.1s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+        <i data-lucide="tags" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Classificação de Transações</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/10 border border-emerald-200 dark:border-emerald-800">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-3"><i data-lucide="brain-circuit" class="w-5 h-5"></i> Modelo Principal (ML)</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Cada despesa é classificada em uma de 7 categorias usando <strong>TF-IDF + classificador treinado</strong>:</p>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <span class="px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold">Alimentação</span>
+          <span class="px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-semibold">Transporte</span>
+          <span class="px-2 py-1 rounded bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 font-semibold">Saúde</span>
+          <span class="px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold">Moradia</span>
+          <span class="px-2 py-1 rounded bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 font-semibold">Educação</span>
+          <span class="px-2 py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 font-semibold">Lazer</span>
+          <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold col-span-2 text-center">Serviços</span>
+        </div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/10 border border-amber-200 dark:border-amber-800">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-amber-700 dark:text-amber-400 mb-3"><i data-lucide="shield-alert" class="w-5 h-5"></i> Fallback Heurístico</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">Se os modelos de ML não puderem ser carregados, o sistema ativa o fallback:</p>
+        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+          <li class="flex items-start gap-2"><span class="text-amber-500 font-bold">1.</span> <strong>Palavras-chave:</strong> compara a descrição com um dicionário de termos. Cada match adicional aumenta a confiança em +3% (máx. 92%).</li>
+          <li class="flex items-start gap-2"><span class="text-amber-500 font-bold">2.</span> <strong>Fallback por valor</strong> (se não houver match textual):
+            <ul class="mt-1 ml-4 space-y-1 text-xs list-disc list-inside text-slate-500 dark:text-slate-400">
+              <li>Valor <strong>&gt; R$ 1.000</strong> → <span class="font-semibold text-amber-700 dark:text-amber-400">Moradia</span> (60% confiança)</li>
+              <li>Valor <strong>&gt; R$ 200</strong> → <span class="font-semibold text-amber-700 dark:text-amber-400">Serviços</span> (55% confiança)</li>
+              <li>Valor <strong>≤ R$ 200</strong> → <span class="font-semibold text-amber-700 dark:text-amber-400">Lazer</span> (50% confiança)</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETERMINAÇÃO DO PERFIL -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.15s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400">
+        <i data-lucide="user-check" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Determinação do Perfil Financeiro</h2>
+    </div>
+
+    <div class="p-4 mb-6 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 flex items-start gap-3">
+      <i data-lucide="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5"></i>
+      <p class="text-sm text-blue-700 dark:text-blue-400">O perfil é definido pelo modelo de ML ou pelo fallback heurístico. O score numérico é calculado <strong>depois</strong> e recebe um bônus conforme o perfil já identificado. As faixas abaixo são <em>referências interpretativas</em>, não regras rígidas de classificação.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mb-8">
+      <div class="text-center p-5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white">
+        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">S</div>
+        <p class="font-bold text-lg">Saudável</p>
+        <p class="text-xs opacity-90 mt-1">Score típico: 700-1000</p>
+        <p class="text-xs opacity-80 mt-1">Hábitos excelentes, margem confortável</p>
+      </div>
+      <div class="text-center p-5 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">O</div>
+        <p class="font-bold text-lg">Em Observação</p>
+        <p class="text-xs opacity-90 mt-1">Score típico: 400-699</p>
+        <p class="text-xs opacity-80 mt-1">Atenção necessária, ajustes recomendados</p>
+      </div>
+      <div class="text-center p-5 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 text-white">
+        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">R</div>
+        <p class="font-bold text-lg">Em Risco</p>
+        <p class="text-xs opacity-90 mt-1">Score típico: 0-399</p>
+        <p class="text-xs opacity-80 mt-1">Situação crítica, ação urgente necessária</p>
+      </div>
+    </div>
+
+    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+      <h3 class="flex items-center gap-2 text-lg font-bold text-slate-700 dark:text-slate-300 mb-4"><i data-lucide="shuffle" class="w-5 h-5 text-amber-500"></i> Fallback Heurístico de Perfil (Modo de Segurança)</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Se o modelo de perfil não estiver disponível, o sistema calcula pontos baseados em regras simples:</p>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-4">
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Endividamento</p>
+          <ul class="space-y-1 text-xs text-slate-600 dark:text-slate-400 list-disc list-inside">
+            <li>≤ 30%: <strong>+2 pts</strong></li>
+            <li>≤ 50%: <strong>+1 pt</strong></li>
+            <li>≤ 70%: <strong>0 pt</strong></li>
+            <li>&gt; 70%: <strong>-2 pts</strong></li>
+          </ul>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Poupança</p>
+          <ul class="space-y-1 text-xs text-slate-600 dark:text-slate-400 list-disc list-inside">
+            <li>Alta: <strong>+2 pts</strong></li>
+            <li>Média: <strong>+1 pt</strong></li>
+            <li>Baixa: <strong>0 pt</strong></li>
+          </ul>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Proporção de Gastos</p>
+          <ul class="space-y-1 text-xs text-slate-600 dark:text-slate-400 list-disc list-inside">
+            <li>≤ 30% da renda: <strong>+3 pts</strong></li>
+            <li>≤ 50%: <strong>+2 pts</strong></li>
+            <li>≤ 70%: <strong>+1 pt</strong></li>
+            <li><strong>&gt; 70% e ≤ 90%: -1 pt</strong></li>
+            <li>&gt; 90%: <strong>-3 pts</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Classificação Final por Pontos</p>
+        <div class="flex flex-wrap gap-3 text-xs">
+          <span class="px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-bold">Score ≥ 5 → Saudável</span>
+          <span class="px-3 py-1.5 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-bold">Score ≥ 2 → Em Observação</span>
+          <span class="px-3 py-1.5 rounded-lg bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 font-bold">Score &lt; 2 → Em Risco</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÁLCULO DO SCORE -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.2s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
+        <i data-lucide="calculator" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Cálculo do Score de Saúde (0-1000)</h2>
+    </div>
+
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Fórmula ponderada aplicada <strong>após</strong> a definição do perfil. O score é limitado a 1000 pontos.</p>
+
+    <div class="space-y-4">
+      <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-primary-50 to-transparent dark:from-primary-900/10 dark:to-transparent border-l-4 border-primary-500">
+        <div class="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+          <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">1</span>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">Endividamento (até 300 pts)</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Fórmula: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">max(0, 300 - (endividamento × 3))</code>. Endividamento 0% = 300 pts. Cada 1% acima reduz 3 pts.</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-primary-50 to-transparent dark:from-primary-900/10 dark:to-transparent border-l-4 border-primary-500">
+        <div class="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+          <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">2</span>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">Poupança (até 250 pts)</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Alta = 250 pts | Média = 150 pts | Baixa = 50 pts</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-primary-50 to-transparent dark:from-primary-900/10 dark:to-transparent border-l-4 border-primary-500">
+        <div class="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+          <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">3</span>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">Proporção de Gastos (até 300 pts)</p>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2 text-xs">
+            <span class="px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold text-center">≤ 30% = 300</span>
+            <span class="px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-semibold text-center">≤ 50% = 220</span>
+            <span class="px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-semibold text-center">≤ 70% = 140</span>
+            <span class="px-2 py-1 rounded bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 font-semibold text-center">≤ 90% = 70</span>
+            <span class="px-2 py-1 rounded bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 font-semibold text-center">&gt; 90% = 10</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-primary-50 to-transparent dark:from-primary-900/10 dark:to-transparent border-l-4 border-primary-500">
+        <div class="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+          <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">4</span>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-700 dark:text-slate-300 text-sm">Bônus de Perfil</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Saudável = +150 pts | Em Observação = +70 pts | Em Risco = 0 pt</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+      <p class="text-xs text-slate-500 dark:text-slate-500"><strong>Nota:</strong> O score final é a soma dos 4 fatores, limitada a 1000. Como o bônus de perfil é aplicado após a classificação, um perfil "Saudável" pode, em cenários extremos, apresentar score numérico abaixo de 700 — o que indica que a métrica quantitativa divergiu da classificação qualitativa do modelo.</p>
+    </div>
+  </div>
+
+  <!-- EXPLICABILIDADE -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.25s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400">
+        <i data-lucide="help-circle" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Explicabilidade do Perfil</h2>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">O sistema gera automaticamente 4 itens de explicação para que você entenda o porquê do resultado:</p>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
+        <p class="font-bold text-cyan-700 dark:text-cyan-400 text-sm mb-1">1. Endividamento</p>
+        <p class="text-xs text-cyan-600 dark:text-cyan-500">"Endividamento em X% (ideal)" se ≤ 30%, ou "(acima do ideal de 30%)" se maior.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
+        <p class="font-bold text-cyan-700 dark:text-cyan-400 text-sm mb-1">2. Poupança</p>
+        <p class="text-xs text-cyan-600 dark:text-cyan-500">"Poupança classificada como Alta/Média/Baixa".</p>
+      </div>
+      <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
+        <p class="font-bold text-cyan-700 dark:text-cyan-400 text-sm mb-1">3. Proporção de Gastos</p>
+        <p class="text-xs text-cyan-600 dark:text-cyan-500">"Gastos consomem X% da renda (saudável)" se ≤ 50%, ou "(atenção)" se maior.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
+        <p class="font-bold text-cyan-700 dark:text-cyan-400 text-sm mb-1">4. Maior Categoria</p>
+        <p class="text-xs text-cyan-600 dark:text-cyan-500">"Maior categoria de gasto: [Nome] (R$ X,XX)".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÉTRICAS DO DASHBOARD -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.3s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+        <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Métricas do Dashboard</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-1">Total Gasto</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Soma de <strong>todas</strong> as transações informadas. Base para todas as análises.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-1">% da Renda</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">(Total Gasto ÷ Renda Mensal) × 100. <strong>Ideal: &lt; 50%</strong>.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-1">Comprometimento</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">(% da Renda) + (Endividamento). Representa o <strong>peso total</strong> das obrigações. Quanto menor, melhor.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-1">Confiança</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Probabilidade máxima retornada pelo modelo de perfil (0-100%). Quanto mais próximo de 100%, mais certeza a IA tem do diagnóstico.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.35s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400">
+        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Sistema de Alertas</h2>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Alertas são gerados automaticamente quando uma das seguintes condições é atingida:</p>
+    <div class="space-y-3">
+      <div class="flex items-start gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <span class="px-2 py-1 rounded bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs font-bold whitespace-nowrap">META</span>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Gasto em uma categoria <strong>ultrapassa</strong> o valor definido na meta.</p>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <span class="px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold whitespace-nowrap">90%</span>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Gasto em uma categoria atinge <strong>≥ 90% da meta</strong> (alerta de proximidade).</p>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <span class="px-2 py-1 rounded bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs font-bold whitespace-nowrap">&gt;30%</span>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Endividamento <strong>acima de 30%</strong> (recomendado &lt; 30%).</p>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <span class="px-2 py-1 rounded bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs font-bold whitespace-nowrap">&gt;90%</span>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Gastos consomem <strong>mais de 90% da renda</strong> — risco de endividamento.</p>
+      </div>
+      <div class="flex items-start gap-3 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <span class="px-2 py-1 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold whitespace-nowrap">&gt;70%</span>
+        <p class="text-sm text-slate-600 dark:text-slate-400">Gastos consomem <strong>mais de 70% da renda</strong> — atenção necessária.</p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-500 dark:text-slate-500 mt-4"><strong>Nota:</strong> Alertas de meta só aparecem se você tiver definido um valor de meta para a categoria. Deixe 0 ou omita para desativar alertas por categoria.</p>
+  </div>
+
+  <!-- RECOMENDAÇÕES -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.4s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400">
+        <i data-lucide="message-square" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Geração de Recomendações</h2>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">As recomendações são <strong>contextuais</strong> e seguem uma hierarquia de prioridade. No máximo <strong>8 recomendações</strong> são exibidas, ordenadas por relevância.</p>
+
+    <div class="space-y-4">
+      <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800">
+        <p class="font-bold text-violet-700 dark:text-violet-400 text-sm mb-2">1. Perfil Base</p>
+        <ul class="space-y-1 text-xs text-violet-600 dark:text-violet-500 list-disc list-inside">
+          <li><strong>Saudável:</strong> investimentos, diversificação, metas de longo prazo.</li>
+          <li><strong>Em Observação:</strong> orçamento, reserva de emergência, cancelamento de assinaturas.</li>
+          <li><strong>Em Risco:</strong> redução de gastos, negociação de dívidas, renda extra.</li>
+        </ul>
+      </div>
+      <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800">
+        <p class="font-bold text-violet-700 dark:text-violet-400 text-sm mb-2">2. Metas Ultrapassadas</p>
+        <p class="text-xs text-violet-600 dark:text-violet-500">Se uma categoria estourou o teto definido, um alerta específico de redução é gerado <em>(somente se metas foram enviadas na requisição)</em>.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800">
+        <p class="font-bold text-violet-700 dark:text-violet-400 text-sm mb-2">3. Proporções por Categoria</p>
+        <div class="grid md:grid-cols-2 gap-2 text-xs text-violet-600 dark:text-violet-500">
+          <span>• Alimentação &gt; 30% → planeje marmitas</span>
+          <span>• Transporte &gt; 20% → avalie ônibus/bike</span>
+          <span>• Lazer &gt; 15% → reduza streaming</span>
+          <span>• Moradia &gt; 35% → renegocie aluguel</span>
+          <span>• Saúde &gt; 10% → verifique plano</span>
+          <span>• Educação &gt; 15% → monitore retorno</span>
+          <span>• Serviços &gt; 10% → revise assinaturas</span>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800">
+        <p class="font-bold text-violet-700 dark:text-violet-400 text-sm mb-2">4. Combinação Especial</p>
+        <p class="text-xs text-violet-600 dark:text-violet-500">Se <strong>endividamento &lt; 10%</strong> + <strong>poupança Alta</strong> + <strong>gastos &lt; 50%</strong> → mensagem de independência financeira.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTRATO DA API -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.45s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+        <i data-lucide="file-json" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Contrato da API</h2>
+    </div>
+
+    <div class="space-y-4">
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-2">Endpoint</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>POST /analise-financeira
+Content-Type: application/json</div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-2">Campos Obrigatórios</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-100 dark:bg-slate-600"><tr><th class="p-2 text-left">Campo</th><th class="p-2 text-left">Tipo</th><th class="p-2 text-left">Regras</th></tr></thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tr><td class="p-2 font-mono text-primary-400">renda_mensal</td><td class="p-2 font-mono text-primary-400">number</td><td class="p-2 font-mono text-primary-400">&gt; 0</td></tr>
+              <tr><td class="p-2 font-mono text-primary-400">nivel_endividamento</td><td class="p-2 font-mono text-primary-400">number</td><td class="p-2 font-mono text-primary-400">0 a 100</td></tr>
+              <tr><td class="p-2 font-mono text-primary-400">frequencia_poupanca</td><td class="p-2 font-mono text-primary-400">string</td><td class="p-2 font-mono text-primary-400">Valores exatos: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">"Alta"</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">"Media"</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">"Baixa"</code> (sem acento)</td></tr>
+              <tr><td class="p-2 font-mono text-primary-400">transacoes</td><td class="p-2 font-mono text-primary-400">array</td><td class="p-2 font-mono text-primary-400">Mínimo 1 item. Cada item: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">descricao</code> (string) e <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">valor</code> (number &gt; 0)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="font-bold text-slate-700 dark:text-slate-300 text-sm mb-2">Campos Opcionais</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-100 dark:bg-slate-600"><tr><th class="p-2 text-left">Campo</th><th class="p-2 text-left">Tipo</th><th class="p-2 text-left">Descrição</th></tr></thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tr><td class="p-2 font-mono text-primary-400">metas</td><td class="p-2 font-mono text-primary-400">object</td><td class="p-2 font-mono text-primary-400">Chaves: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">alimentacao</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">transporte</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">saude</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">moradia</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">educacao</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">lazer</code>, <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">servicos</code>. Valor em R$. Use 0 ou omita para não definir meta.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 flex items-start gap-3">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5"></i>
+        <div>
+          <p class="text-sm font-bold text-amber-700 dark:text-amber-400">Atenção: Validação Strict</p>
+          <p class="text-xs text-amber-600 dark:text-amber-500">O campo <code class="bg-white dark:bg-slate-800 px-1 rounded">frequencia_poupanca</code> rejeita qualquer valor fora de <code class="bg-white dark:bg-slate-800 px-1 rounded">"Alta"</code>, <code class="bg-white dark:bg-slate-800 px-1 rounded">"Media"</code> ou <code class="bg-white dark:bg-slate-800 px-1 rounded">"Baixa"</code>. Enviar <code class="bg-white dark:bg-slate-800 px-1 rounded">"Média"</code> (com acento) resulta em erro 422 de validação.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODELOS DE ML -->
+  <div class="glass-card rounded-3xl p-8 animate-slide-up" style="animation-delay:0.5s">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+        <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Modelos de Machine Learning</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/10 border border-emerald-200 dark:border-emerald-800">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-emerald-700 dark:text-emerald-400 mb-3">
+          <i data-lucide="tags" class="w-5 h-5"></i> Classificação de Categorias
+        </h3>
+        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+          <li><strong>Algoritmo:</strong> Regressão Logística Multinomial (scikit-learn)</li>
+          <li><strong>Vetorização:</strong> TF-IDF com n-grams (1,2)</li>
+          <li><strong>Validação:</strong> 10 rodadas de validação cruzada por estabelecimento</li>
+          <li><strong>Performance:</strong> ~86,8% acurácia | F1-macro ~86,3%</li>
+          <li><strong>Artefatos:</strong> <code>vetorizador_tfidf.pkl</code>, <code>modelo_categoria_producao.pkl</code></li>
+        </ul>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-primary-50 to-purple-50 dark:from-primary-900/20 dark:to-purple-900/10 border border-primary-200 dark:border-primary-800">
+        <h3 class="flex items-center gap-2 text-lg font-bold text-primary-700 dark:text-primary-400 mb-3">
+          <i data-lucide="user-check" class="w-5 h-5"></i> Classificação de Perfil
+        </h3>
+        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+          <li><strong>Algoritmo:</strong> Random Forest (200 estimadores, max_depth=10)</li>
+          <li><strong>Treinamento:</strong> 5.000 perfis sintéticos (distribuições log-normal e Beta)</li>
+          <li><strong>Rótulos:</strong> Gerados por regra de negócio determinística</li>
+          <li><strong>Features:</strong> Renda, endividamento, poupança, comprometimento, gastos por categoria</li>
+          <li><strong>Artefatos:</strong> <code>modelo_perfil_producao.pkl</code>, <code>codificador_perfil.pkl</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+      <p class="text-sm text-slate-600 dark:text-slate-400">
+        <strong>Nota sobre o fallback:</strong> Se os modelos não puderem ser carregados (erro de download do OCI, corrupção de arquivo, primeiro acesso), o sistema ativa o <strong>fallback heurístico</strong> — regras de palavras-chave para categorias e pontuação por limiares para perfil — garantindo que a análise nunca pare completamente.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ARQUITETURA ==================== -->
+<div id="content-arquitetura" class="tab-content hidden space-y-8">
+  <div class="glass-card rounded-3xl p-8">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Arquitetura do Sistema</h2>
+      <p class="text-slate-500 dark:text-slate-400">Como tudo se conecta — de forma simples</p>
+    </div>
+
+    <div class="arch-node glass rounded-2xl p-6 mb-4 border-l-4 border-primary-500 bg-gradient-to-r from-primary-50/50 to-transparent dark:from-primary-900/10 dark:to-transparent">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <i data-lucide="user" class="w-7 h-7 text-white"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Você (Navegador)</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Acessa pelo celular ou computador em <span class="font-mono text-primary-600 dark:text-primary-400 ip-display">http://SEU_IP_OCI</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center my-2"><i data-lucide="arrow-down" class="w-6 h-6 text-primary-400 animate-bounce"></i></div>
+
+    <div class="arch-node glass rounded-2xl p-6 mb-4 border-l-4 border-emerald-500 bg-gradient-to-r from-emerald-50/50 to-transparent dark:from-emerald-900/10 dark:to-transparent">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg">
+          <i data-lucide="server" class="w-7 h-7 text-white"></i>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">NGINX (Porta 80)</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">O "porteiro" do sistema. Recebe todas as requisições e direciona para o lugar certo:</p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-700 dark:text-emerald-400">/ → Frontend</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-700 dark:text-emerald-400">/analise-financeira → API</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-700 dark:text-emerald-400">/docs → Swagger</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-700 dark:text-emerald-400">/health → Status</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center my-2"><i data-lucide="arrow-down" class="w-6 h-6 text-primary-400 animate-bounce"></i></div>
+
+    <div class="grid md:grid-cols-2 gap-4 mb-4">
+      <div class="arch-node glass rounded-2xl p-6 border-l-4 border-purple-500 bg-gradient-to-r from-purple-50/50 to-transparent dark:from-purple-900/10 dark:to-transparent">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg">
+            <i data-lucide="palette" class="w-7 h-7 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Frontend</h3>
+            <p class="text-xs text-slate-500">index.html servido pelo Nginx</p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-500"></i> Tailwind CSS + Chart.js</li>
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-500"></i> Dark / Light Mode</li>
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-500"></i> PT / EN / ES</li>
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-500"></i> Dashboard com gráficos</li>
+        </ul>
+      </div>
+      <div class="arch-node glass rounded-2xl p-6 border-l-4 border-orange-500 bg-gradient-to-r from-orange-50/50 to-transparent dark:from-orange-900/10 dark:to-transparent">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg">
+            <i data-lucide="cpu" class="w-7 h-7 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Backend (FastAPI)</h3>
+            <p class="text-xs text-slate-500">main.py na porta 8000</p>
+          </div>
+        </div>
+        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-orange-500"></i> Classifica transações (ML)</li>
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-orange-500"></i> Analisa perfil financeiro</li>
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-orange-500"></i> Gera recomendações</li>
+          <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-orange-500"></i> SQLite (histórico)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex justify-center my-2"><i data-lucide="arrow-down" class="w-6 h-6 text-primary-400 animate-bounce"></i></div>
+
+    <div class="arch-node glass rounded-2xl p-6 border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-50/50 to-transparent dark:from-cyan-900/10 dark:to-transparent">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg">
+          <i data-lucide="cloud" class="w-7 h-7 text-white"></i>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">OCI Object Storage</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">Bucket: <span class="font-mono text-cyan-600 dark:text-cyan-400">hackathon-one-g9-team-20</span></p>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-cyan-200 dark:border-cyan-800 text-xs font-semibold text-cyan-700 dark:text-cyan-400">vetorizador_tfidf.pkl</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-cyan-200 dark:border-cyan-800 text-xs font-semibold text-cyan-700 dark:text-cyan-400">modelo_categoria_producao.pkl</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-cyan-200 dark:border-cyan-800 text-xs font-semibold text-cyan-700 dark:text-cyan-400">codificador_categorias.pkl</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-cyan-200 dark:border-cyan-800 text-xs font-semibold text-cyan-700 dark:text-cyan-400">modelo_perfil_producao.pkl</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-cyan-200 dark:border-cyan-800 text-xs font-semibold text-cyan-700 dark:text-cyan-400">codificador_perfil.pkl</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-center">
+      <p class="text-sm text-slate-500 dark:text-slate-400">
+        <span class="inline-flex items-center gap-2 mr-4"><i data-lucide="server" class="w-4 h-4 text-primary-500"></i> VM.Standard.E2.1.Micro</span>
+        <span class="inline-flex items-center gap-2 mr-4"><i data-lucide="hard-drive" class="w-4 h-4 text-primary-500"></i> Ubuntu 24.04 LTS</span>
+        <span class="inline-flex items-center gap-2"><i data-lucide="database" class="w-4 h-4 text-primary-500"></i> OCI Always Free</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Estrutura de Pastas Corrigida -->
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+        <i data-lucide="folder-tree" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Estrutura de Pastas na VM</h2>
+    </div>
+    <div class="code-block text-sm leading-relaxed folder-tree">
+      <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+<span class="comment"># Diretório home do usuário ubuntu</span>
+/home/ubuntu/
+│
+├── <span class="folder">finsight-ai/</span>                    <span class="comment"># Projeto principal</span>
+│   ├── <span class="folder">backend/</span>
+│   │   └── <span class="file">main.py</span>              <span class="comment"># Código da API FastAPI</span>
+│   ├── <span class="folder">models/</span>
+│   │   ├── <span class="file">vetorizador_tfidf.pkl</span>
+│   │   ├── <span class="file">modelo_categoria_producao.pkl</span>
+│   │   ├── <span class="file">codificador_categorias.pkl</span>
+│   │   ├── <span class="file">modelo_perfil_producao.pkl</span>
+│   │   └── <span class="file">codificador_perfil.pkl</span>
+│   ├── <span class="folder">data/</span>
+│   │   └── <span class="file">finsight.db</span>          <span class="comment"># Banco SQLite (histórico)</span>
+│   └── <span class="folder">venv/</span>                  <span class="comment"># Ambiente virtual Python</span>
+│
+├── <span class="folder">/var/www/finsight/</span>
+│   └── <span class="file">index.html</span>             <span class="comment"># Frontend (servido pelo Nginx)</span>
+│
+├── <span class="file">ATUALIZAR_VM_v4.sh</span>         <span class="comment"># Script de atualização automática</span>
+│
+└── <span class="folder">backup_rollback/</span>           <span class="comment"># Backups automáticos</span>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400">
+        <i data-lucide="git-branch" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Fluxo de Dados</h2>
+    </div>
+    <div class="relative">
+      <div class="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-primary-400 via-accent-400 to-cyan-400 opacity-40"></div>
+      <div class="space-y-6">
+        <div class="flex items-start gap-4 pl-2">
+          <div class="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-sm z-10 shadow-lg">1</div>
+          <div class="flex-1 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Entrada de Dados</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Usuário preenche renda, endividamento, poupança e transações no frontend.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 pl-2">
+          <div class="w-10 h-10 rounded-full bg-accent-500 flex items-center justify-center text-white font-bold text-sm z-10 shadow-lg">2</div>
+          <div class="flex-1 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Classificação por IA</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Cada transação é classificada em uma das 7 categorias usando TF-IDF + modelo treinado. Se falhar, usa fallback heurístico.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 pl-2">
+          <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-sm z-10 shadow-lg">3</div>
+          <div class="flex-1 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Análise de Perfil</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">O modelo de perfil analisa renda, gastos, endividamento e poupança. Se indisponível, o fallback calcula por regras de pontuação.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 pl-2">
+          <div class="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center text-white font-bold text-sm z-10 shadow-lg">4</div>
+          <div class="flex-1 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Resposta e Persistência</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Resultado é enviado ao usuário com gráficos, score, explicações e salvo no SQLite para histórico e evolução.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CONFIGURAR VM OCI ==================== -->
+<div id="content-oci-vm" class="tab-content hidden space-y-8">
+  <div class="glass-card rounded-3xl p-8">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Criar VM na OCI (Always Free)</h2>
+      <p class="text-slate-500 dark:text-slate-400">Do zero à VM rodando em 15 minutos</p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-4 mb-8">
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 text-white">
+        <i data-lucide="compass" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">1. Compartment</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+        <i data-lucide="network" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">2. Rede (VCN)</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 text-white">
+        <i data-lucide="server" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">3. Compute</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-600 text-white">
+        <i data-lucide="shield" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">4. Segurança</p>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Passo 1 -->
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">1</span>
+          </div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Criar Compartment</h3>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">No menu OCI, vá em <strong>Identity & Security → Compartments → Create Compartment</strong>:</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>Name: finsight-ai
+Description: Recursos do projeto FinSight AI Hackathon</div>
+      </div>
+
+      <!-- Passo 2 -->
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">2</span>
+          </div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Criar VCN e Subnet Pública</h3>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Networking → Virtual Cloud Networks → Create VCN (Start VCN Wizard):</p>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside mb-3">
+          <li><strong>VCN Name:</strong> finsight-vcn</li>
+          <li><strong>Compartment:</strong> finsight-ai</li>
+          <li><strong>IPv4 CIDR Block:</strong> 10.0.0.0/16</li>
+          <li>Crie uma <strong>Public Subnet</strong>: Name: Subrede-Publica | CIDR: 10.0.1.0/24</li>
+          <li>Ative <strong>Internet Gateway</strong>: Name: igw-finsight</li>
+        </ul>
+      </div>
+
+      <!-- Passo 3 -->
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">3</span>
+          </div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Criar a Instância Compute</h3>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Compute → Instances → Create Instance:</p>
+        <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-600 dark:text-slate-400">
+          <div class="p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-slate-700 dark:text-slate-300 mb-1">Configuração Básica</p>
+            <ul class="space-y-1 text-xs list-disc list-inside">
+              <li>Name: <strong>finsight-ai-v2</strong></li>
+              <li>Compartment: finsight-ai</li>
+              <li>Placement: Availability Domain (qualquer)</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-slate-700 dark:text-slate-300 mb-1">Imagem e Shape</p>
+            <ul class="space-y-1 text-xs list-disc list-inside">
+              <li>Image: <strong>Canonical Ubuntu 24.04</strong></li>
+              <li>Shape: <strong>VM.Standard.E2.1.Micro</strong> (Always Free)</li>
+              <li>OCPU: 1 | Memória: 1 GB</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-slate-700 dark:text-slate-300 mb-1">Rede</p>
+            <ul class="space-y-1 text-xs list-disc list-inside">
+              <li>Primary VCN: finsight-vcn</li>
+              <li>Subnet: Subrede-Publica</li>
+              <li>Private DNS record: Enable</li>
+              <li>Hostname: finsight-ai-v2</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-slate-700 dark:text-slate-300 mb-1">SSH Keys</p>
+            <ul class="space-y-1 text-xs list-disc list-inside">
+              <li>Generate new key pair <strong>OU</strong> paste public key</li>
+              <li>Salve a chave privada (.pem) com segurança</li>
+              <li>Username padrão: <strong>ubuntu</strong></li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-3">Clique <strong>Create</strong> e aguarde o status ficar <span class="text-emerald-600 font-bold">RUNNING</span>. Anote o <strong>Public IP</strong> exibido.</p>
+      </div>
+
+      <!-- Passo 4 -->
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">4</span>
+          </div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Configurar Security List (Firewall)</h3>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Networking → Virtual Cloud Networks → finsight-vcn → Security Lists → Default Security List:</p>
+        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Ingress Rules (Entrada):</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs mb-3">
+            <thead class="bg-slate-100 dark:bg-slate-600"><tr><th class="p-2 text-left">Stateless</th><th class="p-2 text-left">Source</th><th class="p-2 text-left">Protocol</th><th class="p-2 text-left">Ports</th><th class="p-2 text-left">Description</th></tr></thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tr><td class="p-2 dark:text-slate-300">No</td><td class="p-2 dark:text-slate-300">0.0.0.0/0</td><td class="p-2 dark:text-slate-300">TCP</td><td class="p-2 dark:text-slate-300">22</td><td class="p-2 dark:text-slate-300">SSH Remote Login</td></tr>
+              <tr><td class="p-2 dark:text-slate-300">No</td><td class="p-2 dark:text-slate-300">0.0.0.0/0</td><td class="p-2 dark:text-slate-300">TCP</td><td class="p-2 dark:text-slate-300">80</td><td class="p-2 dark:text-slate-300">HTTP - Portas Web</td></tr>
+              <tr><td class="p-2 dark:text-slate-300">No</td><td class="p-2 dark:text-slate-300">0.0.0.0/0</td><td class="p-2 dark:text-slate-300">TCP</td><td class="p-2 dark:text-slate-300">443</td><td class="p-2 dark:text-slate-300">HTTPS</td></tr>
+              <tr><td class="p-2 dark:text-slate-300">No</td><td class="p-2 dark:text-slate-300">0.0.0.0/0</td><td class="p-2 dark:text-slate-300">ICMP</td><td class="p-2 dark:text-slate-300">3,4</td><td class="p-2 dark:text-slate-300">Fragmentation Needed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Egress Rules (Saída):</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>Stateless: No
+Source: 0.0.0.0/0
+Protocol: All Protocols
+Description: All traffic for all ports (internet, OCI APIs, downloads)</div>
+      </div>
+
+      <!-- Passo 5 -->
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">5</span>
+          </div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Criar Dynamic Group (Acesso ao Object Storage)</h3>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Identity & Security → Dynamic Groups → Create Dynamic Group:</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>Name: finsight-ai-instances
+Description: VMs do FinSight AI que acessam Object Storage
+Matching Rule: instance.id = 'ocid1.instance.oc1.sa-saopaulo-1.aaaa...'
+<span class="comment"># Dica: use o OCID da sua instância, ou use:</span>
+<span class="comment"># instance.compartment.id = 'ocid1.compartment.oc1..aaaa...'</span></div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-2">Depois, crie uma <strong>Policy</strong> no compartment <em>finsight-ai</em>:</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>Allow dynamic-group finsight-ai-instances to read objects in compartment finsight-ai
+Allow dynamic-group finsight-ai-instances to manage objects in compartment finsight-ai where all {target.bucket.name='hackathon-one-g9-team-20', any {request.permission='OBJECT_CREATE', request.permission='OBJECT_READ', request.permission='OBJECT_INSPECT'}}</div>
+      </div>
+
+      <!-- Passo 6 -->
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <span class="text-primary-600 dark:text-primary-400 font-bold text-sm">6</span>
+          </div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Criar Bucket no Object Storage</h3>
+        </div>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Storage → Buckets → Create Bucket:</p>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside mb-3">
+          <li>Bucket Name: <strong>hackathon-one-g9-team-20</strong></li>
+          <li>Compartment: finsight-ai</li>
+          <li>Storage Tier: Standard</li>
+          <li>Visibility: Private</li>
+        </ul>
+        <p class="text-xs text-slate-500 dark:text-slate-500">Dentro do bucket, crie a pasta <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">models/</code> e faça upload dos 5 arquivos .pkl. Crie também <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">datasets/</code> para os dados de treino.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== INSTALAÇÃO ==================== -->
+<div id="content-instalacao" class="tab-content hidden space-y-8">
+  <div class="glass-card rounded-3xl p-8">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Instalação na VM</h2>
+      <p class="text-slate-500 dark:text-slate-400">Do zero ao ar em 20 minutos</p>
+    </div>
+
+    <div class="p-4 mb-6 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 flex items-start gap-3">
+      <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5"></i>
+      <div>
+        <p class="text-sm font-bold text-amber-700 dark:text-amber-400">Importante: Substitua SEU_IP_OCI</p>
+        <p class="text-xs text-amber-600 dark:text-amber-500">Todos os comandos abaixo usam <code class="bg-white dark:bg-slate-800 px-1 rounded ip-display">SEU_IP_OCI</code> como placeholder. Substitua pelo IP público da sua VM antes de executar. Exemplo: <code class="bg-white dark:bg-slate-800 px-1 rounded">203.0.113.10</code></p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-5 gap-4 mb-8">
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 text-white">
+        <i data-lucide="shield-check" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">1. Acesso SSH</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 text-white">
+        <i data-lucide="package" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">2. Dependências</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 text-white">
+        <i data-lucide="hard-drive" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">3. SWAP 2GB</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-600 text-white">
+        <i data-lucide="settings" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">4. Serviços</p>
+      </div>
+      <div class="text-center p-4 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 text-white">
+        <i data-lucide="rocket" class="w-8 h-8 mx-auto mb-2"></i>
+        <p class="text-xs font-bold">5. No Ar!</p>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">1</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Acesse a VM via SSH</h3>
+        </div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>ssh -i ~/.ssh/sua-chave.pem ubuntu@SEU_IP_OCI</div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-2">Se não souber o IP, vá em OCI → Compute → Instances → finsight-ai-v2 → Public IP Address.</p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">2</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Atualize o sistema</h3>
+        </div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo apt update && sudo apt upgrade -y
+sudo apt install -y python3 python3-pip python3-venv python3-dev nginx build-essential curl wget git</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">3</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Crie SWAP de 2GB (ESSENCIAL)</h3>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mb-2">A VM free tem apenas 1GB RAM. O SWAP evita travamentos ao carregar modelos de ML.</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+free -h</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">4</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Crie estrutura e ambiente Python</h3>
+        </div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>mkdir -p ~/finsight-ai/{backend,models,data}
+sudo mkdir -p /var/www/finsight
+python3 -m venv ~/finsight-ai/venv
+source ~/finsight-ai/venv/bin/activate
+pip install --upgrade pip
+pip install joblib pandas oci fastapi uvicorn pydantic scikit-learn numpy</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">5</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Envie os arquivos do projeto (do seu PC)</h3>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mb-2">Em um novo terminal na sua máquina local:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>scp -i ~/.ssh/sua-chave.pem main.py ubuntu@SEU_IP_OCI:/home/ubuntu/
+scp -i ~/.ssh/sua-chave.pem index.html ubuntu@SEU_IP_OCI:/home/ubuntu/
+scp -i ~/.ssh/sua-chave.pem docnet3.html ubuntu@SEU_IP_OCI:/home/ubuntu/
+scp -i ~/.ssh/sua-chave.pem ATUALIZAR_VM_v4.sh ubuntu@SEU_IP_OCI:/home/ubuntu/</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">6</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Mova arquivos para os locais corretos</h3>
+        </div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>mv /home/ubuntu/main.py ~/finsight-ai/backend/main.py
+sudo mv /home/ubuntu/index.html /var/www/finsight/index.html
+sudo mv /home/ubuntu/docnet3.html /var/www/finsight/docnet3.html
+sudo chown -R www-data:www-data /var/www/finsight/
+chmod +x /home/ubuntu/ATUALIZAR_VM_v4.sh</div>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">7</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Baixe os modelos do OCI Object Storage</h3>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mb-2">Dentro da VM, com o ambiente virtual ativado:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>source ~/finsight-ai/venv/bin/activate
+NS=$(oci os ns get --query data --raw-output)
+oci os object get --bucket-name hackathon-one-g9-team-20 --name models_vetorizador_tfidf.pkl --file ~/finsight-ai/models/vetorizador_tfidf.pkl
+oci os object get --bucket-name hackathon-one-g9-team-20 --name models_modelo_categoria_producao.pkl --file ~/finsight-ai/models/modelo_categoria_producao.pkl
+oci os object get --bucket-name hackathon-one-g9-team-20 --name models_codificador_categorias.pkl --file ~/finsight-ai/models/codificador_categorias.pkl
+oci os object get --bucket-name hackathon-one-g9-team-20 --name models_modelo_perfil_producao.pkl --file ~/finsight-ai/models/modelo_perfil_producao.pkl
+oci os object get --bucket-name hackathon-one-g9-team-20 --name models_codificador_perfil.pkl --file ~/finsight-ai/models/codificador_perfil.pkl</div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-2">Se o comando <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">oci</code> não existir: <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded">pip install oci</code></p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center"><span class="text-primary-600 dark:text-primary-400 font-bold text-sm">8</span></div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-300">Configure e inicie os serviços</h3>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">Execute o script de atualização automática:</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>bash ~/ATUALIZAR_VM_v4.sh</div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Este script configura automaticamente o Systemd, Nginx, SWAP e faz health check. Se não tiver o script, configure manualmente:</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button><span class="comment"># 1. Criar service do backend</span>
+sudo tee /etc/systemd/system/finsight.service > /dev/null << 'EOF'
+[Unit]
+Description=FinSight AI Backend
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/finsight-ai/backend
+Environment="PATH=/home/ubuntu/finsight-ai/venv/bin"
+ExecStart=/home/ubuntu/finsight-ai/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+<span class="comment"># 2. Criar config do Nginx</span>
+sudo tee /etc/nginx/sites-available/finsight > /dev/null << 'EOF'
+server {
+    listen 80;
+    server_name SEU_IP_OCI;
+
+    location / {
+        root /var/www/finsight;
+        index index.html;
+        try_files $uri $uri/ =404;
+    }
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location ~ ^/(analise-financeira|simular|classificar|historico|relatorio|reload-models|health|docs|openapi.json) {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+EOF
+
+sudo ln -sf /etc/nginx/sites-available/finsight /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+
+<span class="comment"># 3. Iniciar tudo</span>
+sudo systemctl daemon-reload
+sudo systemctl enable finsight
+sudo systemctl start finsight
+sudo systemctl restart nginx
+
+<span class="comment"># 4. Testar</span>
+curl http://localhost:8000/health
+curl http://SEU_IP_OCI/health</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+        <i data-lucide="check-circle" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Checklist Pós-Instalação</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-3">
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">VM acessível via SSH</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">Sistema atualizado</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">SWAP de 2GB ativo (free -h)</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">Python venv criado e dependências instaladas</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">5 modelos .pkl baixados para ~/finsight-ai/models/</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">Service finsight ativo (systemctl status finsight)</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">Nginx configurado e rodando (sudo nginx -t)</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">Health check retorna 200 (curl http://SEU_IP_OCI/health)</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">Frontend acessível no navegador (http://SEU_IP_OCI)</span>
+      </label>
+      <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+        <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+        <span class="text-sm text-slate-700 dark:text-slate-300">API responde corretamente (teste /docs ou /analise-financeira)</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== API ==================== -->
+<div id="content-api" class="tab-content hidden space-y-8">
+  <div class="glass-card rounded-3xl p-8">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">API REST — Endpoints</h2>
+      <p class="text-slate-500 dark:text-slate-400">Todos os endpoints disponíveis na API FinSight AI</p>
+    </div>
+
+    <div class="p-4 mb-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 flex items-start gap-3">
+      <i data-lucide="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5"></i>
+      <p class="text-sm text-blue-700 dark:text-blue-400">Substitua <code class="bg-white dark:bg-slate-800 px-1 rounded ip-display">SEU_IP_OCI</code> pelo IP público da sua VM em todos os exemplos abaixo.</p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/health</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Verifica status do sistema</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl http://SEU_IP_OCI/health</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">POST</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/analise-financeira</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Análise financeira completa com ML</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400 overflow-x-auto">
+curl -X POST http://SEU_IP_OCI/analise-financeira \
+  -H "Content-Type: application/json" \
+  -d '{
+    "renda_mensal": 4500,
+    "nivel_endividamento": 25,
+    "frequencia_poupanca": "Media",
+    "transacoes": [
+      {"descricao": "Supermercado", "valor": 420},
+      {"descricao": "Combustivel", "valor": 300}
+    ],
+    "metas": {"alimentacao": 600, "transporte": 400}
+  }'
+        </div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">POST</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/simular</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Simula cenário sem salvar no histórico</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400 overflow-x-auto">
+curl -X POST http://SEU_IP_OCI/simular \
+  -H "Content-Type: application/json" \
+  -d '{
+    "renda_mensal": 6000,
+    "nivel_endividamento": 10,
+    "frequencia_poupanca": "Alta",
+    "transacoes": [{"descricao": "Supermercado", "valor": 500}]
+  }'
+        </div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/classificar</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Classifica uma única transação</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl "http://SEU_IP_OCI/classificar?descricao=Supermercado&valor=420"</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">POST</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/analise-batch-csv</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Análise em lote via arquivo CSV</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400 overflow-x-auto">curl -X POST http://SEU_IP_OCI/analise-batch-csv -F "file=@transacoes.csv"</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/historico</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Lista análises anteriores</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl "http://SEU_IP_OCI/historico?limit=50"</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">GET</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/relatorio/{id}</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Obtém relatório específico do histórico</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl http://SEU_IP_OCI/relatorio/15</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs font-bold">DELETE</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/historico/{id}</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Remove análise do histórico</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl -X DELETE http://SEU_IP_OCI/historico/15</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">POST</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/historico/limpar</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Limpa todo o histórico</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl -X POST http://SEU_IP_OCI/historico/limpar</div>
+      </div>
+
+      <div class="endpoint-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold">POST</span>
+            <code class="text-sm font-mono text-slate-800 dark:text-slate-200">/reload-models</code>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Recarrega modelos de IA sem reiniciar</p>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs font-mono text-slate-600 dark:text-slate-400">curl -X POST http://SEU_IP_OCI/reload-models</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
+        <i data-lucide="file-json" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Resposta da Análise</h2>
+    </div>
+    <div class="code-block text-sm leading-relaxed">
+      <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+{
+  "perfil_financeiro": "Em observacao",
+  "probabilidade": 0.82,
+  "score_saude": 720,
+  "resumo_gastos": {
+    "alimentacao": 420.00,
+    "transporte": 300.00,
+    "servicos": 40.00
+  },
+  "recomendacoes": [
+    "Monitore gastos recorrentes e cancele assinaturas não utilizadas",
+    "Estabeleça um orçamento mensal com limite por categoria"
+  ],
+  "alertas": [
+    "SERVICOS: gasto de R$ 40,00 ultrapassou a meta de R$ 0,00"
+  ],
+  "explicabilidade": [
+    "Endividamento em 25% (acima do ideal de 30%)",
+    "Poupança classificada como Media",
+    "Gastos consomem 16.9% da renda (saudável)"
+  ],
+  "total_gasto": 760.00,
+  "percentual_renda_gasta": 16.89,
+  "comprometimento_gastos": 41.89,
+  "transacoes_classificadas": [
+    {
+      "descricao": "Supermercado Extra",
+      "valor": 420.00,
+      "categoria": "alimentacao",
+      "confianca": 0.94
+    }
+  ]
+}
+    </div>
+  </div>
+</div>
+
+<!-- ==================== GUIA DE USO ==================== -->
+<div id="content-guia" class="tab-content hidden space-y-8">
+  <div class="glass-card rounded-3xl p-8">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Guia de Uso</h2>
+      <p class="text-slate-500 dark:text-slate-400">Como usar o FinSight AI passo a passo</p>
+    </div>
+
+    <div class="space-y-6">
+      <div class="relative pl-8 pb-8 border-l-2 border-primary-200 dark:border-primary-800">
+        <div class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center text-white text-xs font-bold">1</div>
+        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Preencha "Sobre Você"</h3>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-1">Renda Mensal</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Informe sua renda líquida total (salário, freelas, aluguéis).</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-1">Endividamento (%)</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Some todas as dívidas e divida pela renda mensal. Ex: 25%.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-1">Poupança</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Baixa = poupa &lt;5%. Média = 5-15%. Alta = &gt;15%.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8 pb-8 border-l-2 border-primary-200 dark:border-primary-800">
+        <div class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center text-white text-xs font-bold">2</div>
+        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Defina Metas por Categoria (Opcional)</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">Clique em "Mostrar" e defina um teto de gasto para cada categoria. O sistema alertará se você ultrapassar.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
+          <div class="text-center p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
+            <i data-lucide="utensils" class="w-4 h-4 mx-auto text-emerald-500 mb-1"></i>
+            <p class="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Alimentação</p>
+          </div>
+          <div class="text-center p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+            <i data-lucide="car" class="w-4 h-4 mx-auto text-blue-500 mb-1"></i>
+            <p class="text-xs font-semibold text-blue-700 dark:text-blue-400">Transporte</p>
+          </div>
+          <div class="text-center p-2 rounded-lg bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800">
+            <i data-lucide="heart-pulse" class="w-4 h-4 mx-auto text-rose-500 mb-1"></i>
+            <p class="text-xs font-semibold text-rose-700 dark:text-rose-400">Saúde</p>
+          </div>
+          <div class="text-center p-2 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+            <i data-lucide="home" class="w-4 h-4 mx-auto text-amber-500 mb-1"></i>
+            <p class="text-xs font-semibold text-amber-700 dark:text-amber-400">Moradia</p>
+          </div>
+          <div class="text-center p-2 rounded-lg bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800">
+            <i data-lucide="graduation-cap" class="w-4 h-4 mx-auto text-violet-500 mb-1"></i>
+            <p class="text-xs font-semibold text-violet-700 dark:text-violet-400">Educação</p>
+          </div>
+          <div class="text-center p-2 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+            <i data-lucide="gamepad-2" class="w-4 h-4 mx-auto text-yellow-500 mb-1"></i>
+            <p class="text-xs font-semibold text-yellow-700 dark:text-yellow-400">Lazer</p>
+          </div>
+          <div class="text-center p-2 rounded-lg bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600">
+            <i data-lucide="wrench" class="w-4 h-4 mx-auto text-slate-500 mb-1"></i>
+            <p class="text-xs font-semibold text-slate-700 dark:text-slate-300">Serviços</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8 pb-8 border-l-2 border-primary-200 dark:border-primary-800">
+        <div class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center text-white text-xs font-bold">3</div>
+        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Adicione suas Transações</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">Adicione cada gasto com descrição e valor. Seja específico para a IA classificar melhor.</p>
+        <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold">BOA</span>
+            <span class="text-sm text-slate-700 dark:text-slate-300">"Supermercado Extra" — R$ 420,00</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-1 rounded bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs font-bold">RUIM</span>
+            <span class="text-sm text-slate-700 dark:text-slate-300">"Compra" — R$ 420,00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8 pb-8 border-l-2 border-primary-200 dark:border-primary-800">
+        <div class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center text-white text-xs font-bold">4</div>
+        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Clique em "Analisar Minhas Finanças"</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400">A IA processa tudo em segundos e você recebe:</p>
+        <div class="grid md:grid-cols-2 gap-3 mt-3">
+          <div class="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <i data-lucide="gauge" class="w-5 h-5 text-primary-500"></i>
+            <span class="text-sm text-slate-700 dark:text-slate-300">Score de Saúde Financeira</span>
+          </div>
+          <div class="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <i data-lucide="pie-chart" class="w-5 h-5 text-primary-500"></i>
+            <span class="text-sm text-slate-700 dark:text-slate-300">Gráficos de Gastos</span>
+          </div>
+          <div class="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-primary-500"></i>
+            <span class="text-sm text-slate-700 dark:text-slate-300">Alertas de Metas</span>
+          </div>
+          <div class="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+            <i data-lucide="lightbulb" class="w-5 h-5 text-primary-500"></i>
+            <span class="text-sm text-slate-700 dark:text-slate-300">Recomendações Personalizadas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative pl-8">
+        <div class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center text-white text-xs font-bold">5</div>
+        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Explore as Outras Abas</h3>
+        <div class="grid md:grid-cols-2 gap-3">
+          <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800">
+            <p class="font-bold text-cyan-700 dark:text-cyan-400 text-sm mb-1">Simulador</p>
+            <p class="text-xs text-cyan-600 dark:text-cyan-500">Teste cenários hipotéticos sem salvar no histórico. "E se eu cortasse o Netflix?"</p>
+          </div>
+          <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800">
+            <p class="font-bold text-indigo-700 dark:text-indigo-400 text-sm mb-1">Histórico</p>
+            <p class="text-xs text-indigo-600 dark:text-indigo-500">Acompanhe a evolução do seu score ao longo do tempo com gráficos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400">
+        <i data-lucide="upload" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">CSV em Lote</h2>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Para analisar muitas transações de uma vez, use o formato CSV:</p>
+    <div class="code-block text-sm">
+      <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+renda_mensal,nivel_endividamento,frequencia_poupanca,descricao,valor
+4500,25,Media,Supermercado,420
+4500,25,Media,Combustivel,300
+4500,25,Media,Netflix,40
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-4">Você pode arrastar o arquivo ou colar o conteúdo diretamente na interface.</p>
+  </div>
+</div>
+
+<!-- ==================== PROBLEMAS ==================== -->
+<div id="content-troubleshoot" class="tab-content hidden space-y-8">
+  <div class="glass-card rounded-3xl p-8">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Problemas e Soluções</h2>
+      <p class="text-slate-500 dark:text-slate-400">Clique nos cards para expandir a solução</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="trouble-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700" onclick="toggleTrouble(this)">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400"><i data-lucide="wifi-off" class="w-5 h-5"></i></div>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">VM não responde ao SSH</p>
+              <p class="text-xs text-slate-500">Connection timed out</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform trouble-icon"></i>
+        </div>
+        <div class="trouble-body">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            <p><strong>Verifique:</strong> VM está ligada no console OCI? (Status = RUNNING)</p>
+            <p><strong>Verifique:</strong> IP público está correto? (OCI → Instance → Public IP)</p>
+            <p><strong>Verifique:</strong> Porta 22 aberta no Security List? (Ingress Rule TCP 22)</p>
+            <p><strong>Verifique:</strong> Permissão da chave .pem (chmod 600)?</p>
+            <div class="code-block text-xs mt-2"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>ping SEU_IP_OCI
+nc -zv SEU_IP_OCI 22</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trouble-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700" onclick="toggleTrouble(this)">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Nginx erro 502/503</p>
+              <p class="text-xs text-slate-500">Bad Gateway / Service Unavailable</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform trouble-icon"></i>
+        </div>
+        <div class="trouble-body">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            <p><strong>Backend parado?</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo systemctl restart finsight
+sudo systemctl status finsight</div>
+            <p><strong>Porta 8000 ocupada?</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo fuser -k 8000/tcp 2>/dev/null
+sudo systemctl restart finsight</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trouble-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700" onclick="toggleTrouble(this)">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"><i data-lucide="cpu" class="w-5 h-5"></i></div>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Backend não inicia</p>
+              <p class="text-xs text-slate-500">finsight.service failed</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform trouble-icon"></i>
+        </div>
+        <div class="trouble-body">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            <p><strong>Ver logs:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo journalctl -u finsight -n 50 --no-pager</div>
+            <p><strong>Módulo faltando?</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>source ~/finsight-ai/venv/bin/activate
+pip install fastapi uvicorn pandas scikit-learn numpy joblib oci pydantic
+sudo systemctl restart finsight</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trouble-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700" onclick="toggleTrouble(this)">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400"><i data-lucide="brain" class="w-5 h-5"></i></div>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Modelos não carregam</p>
+              <p class="text-xs text-slate-500">models_loaded: false</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform trouble-icon"></i>
+        </div>
+        <div class="trouble-body">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            <p><strong>Verifique se existem:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>ls -lh ~/finsight-ai/models/</div>
+            <p><strong>Baixe do OCI:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>oci os object get --bucket-name hackathon-one-g9-team-20 \
+  --name models_vetorizador_tfidf.pkl \
+  --file ~/finsight-ai/models/vetorizador_tfidf.pkl</div>
+            <p><strong>Recarregue:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>curl -X POST http://localhost:8000/reload-models</div>
+            <p class="text-xs text-slate-500 mt-1"><strong>Nota:</strong> Mesmo sem modelos, o sistema funciona no <strong>fallback heurístico</strong>. A análise continua disponível, mas com menor precisão na classificação textual.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="trouble-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700" onclick="toggleTrouble(this)">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400"><i data-lucide="memory-stick" class="w-5 h-5"></i></div>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Out of Memory (OOM)</p>
+              <p class="text-xs text-slate-500">VM trava ou processo é morto</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform trouble-icon"></i>
+        </div>
+        <div class="trouble-body">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            <p><strong>Verifique SWAP:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>free -h</div>
+            <p><strong>Crie SWAP se não existir:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile</div>
+            <p><strong>Limpe cache:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trouble-card glass rounded-2xl p-5 border border-slate-200 dark:border-slate-700" onclick="toggleTrouble(this)">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"><i data-lucide="globe" class="w-5 h-5"></i></div>
+            <div>
+              <p class="font-bold text-slate-700 dark:text-slate-300 text-sm">Frontend carrega, API não</p>
+              <p class="text-xs text-slate-500">CORS ou timeout</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 transition-transform trouble-icon"></i>
+        </div>
+        <div class="trouble-body">
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-sm text-slate-600 dark:text-slate-400 space-y-2">
+            <p><strong>Teste local:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>curl http://localhost:8000/health
+curl http://localhost/health</div>
+            <p><strong>Verifique Nginx:</strong></p>
+            <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo nginx -t
+sudo systemctl reload nginx</div>
+            <p><strong>Verifique firewall OCI:</strong> Porta 80 aberta no Security List?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400">
+        <i data-lucide="terminal" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Como Executar o Script de Diagnóstico na VM</h2>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">O script de diagnóstico completo deve ser <strong>salvo em um arquivo .sh</strong> dentro da VM e executado com bash. Siga os passos:</p>
+    <div class="space-y-4">
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Passo 1: Crie o arquivo</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>cat > ~/diagnostico.sh << 'EOF'
+#!/bin/bash
+echo "=== DIAGNÓSTICO FINSIGHT AI ==="
+echo ""
+echo "--- 1. Serviços ---"
+sudo systemctl is-active finsight nginx | sed 's/^/  /'
+echo ""
+echo "--- 2. Portas ---"
+sudo ss -tlnp | grep -E ':(80|8000)\b' | sed 's/^/  /'
+echo ""
+echo "--- 3. Memória ---"
+free -h | sed 's/^/  /'
+echo ""
+echo "--- 4. Disco ---"
+df -h / | sed 's/^/  /'
+echo ""
+echo "--- 5. Modelos ---"
+ls -lh ~/finsight-ai/models/ 2>/dev/null | sed 's/^/  /'
+echo ""
+echo "--- 6. Health Check ---"
+curl -s http://localhost:8000/health | python3 -m json.tool 2>/dev/null | sed 's/^/  /'
+echo ""
+echo "--- 7. Últimos logs ---"
+sudo journalctl -u finsight -n 5 --no-pager 2>/dev/null | sed 's/^/  /'
+echo ""
+echo "=== FIM DO DIAGNÓSTICO ==="
+EOF</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Passo 2: Dê permissão de execução</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>chmod +x ~/diagnostico.sh</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="font-semibold text-sm text-slate-700 dark:text-slate-300 mb-2">Passo 3: Execute</p>
+        <div class="code-block text-xs"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>bash ~/diagnostico.sh</div>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-2">O script exibe status dos serviços, portas abertas, memória, disco, modelos, health check e logs recentes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-3xl p-8">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="p-3 rounded-2xl bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400">
+        <i data-lucide="terminal" class="w-6 h-6"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Comandos de Emergência</h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Logs em tempo real</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo journalctl -u finsight -f</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Reiniciar backend</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo systemctl restart finsight</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Reiniciar Nginx</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo systemctl restart nginx</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Ver porta 8000</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>sudo ss -tlnp | grep 8000</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Memória e SWAP</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>free -h</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Espaço em disco</p>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copiar</button>df -h</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="mt-16 text-center pb-8">
+  <p class="text-lg font-bold text-slate-700 dark:text-slate-300 mb-4">Equipe G9-BR-TEAM-20</p>
+  <div class="flex flex-wrap justify-center gap-2 mb-6">
+    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Fabio C. Zinetti</span>
+    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">João P. R. Deodato</span>
+    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Edson H. F. da Silva</span>
+    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Luciano R. da Silva</span>
+    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Rodrigo M. Veiga</span>
+    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">André Neves Xavier</span>
+  </div>
+  <p class="text-sm text-slate-500 dark:text-slate-500 font-medium">FinSight AI v6.0 — Hackathon OCI 2026</p>
+  <span class="inline-block bg-white/60 dark:bg-slate-800/60 backdrop-blur px-4 py-1.5 rounded-full text-xs font-semibold text-primary-600 dark:text-primary-400 mt-3 border border-primary-100 dark:border-primary-900/20">Oracle Cloud Infrastructure</span>
+</footer>
+
+</div>
+
+<script>
+// ============ GERENCIAMENTO DE IP OCI ============
+const IP_STORAGE_KEY = "finsight_oci_ip";
+const TEMA_STORAGE_KEY = "finsight_tema";
+let currentIP = localStorage.getItem(IP_STORAGE_KEY) || "";
+
+function validarIP(ip) {
+  const regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  return regex.test(ip);
+}
+
+function substituirIPNoDocumento(ipAntigo, ipNovo) {
+  // 1. Atualiza href dos links (getAttribute lê o valor literal, evita canonicalização)
+  document.querySelectorAll("a").forEach(function(a) {
+    var hrefOriginal = a.getAttribute("href") || "";
+    if (hrefOriginal.indexOf(ipAntigo) !== -1) {
+      a.setAttribute("href", hrefOriginal.split(ipAntigo).join(ipNovo));
+    }
+  });
+
+  // 2. Atualiza TODOS os nós de texto do documento (cobre code blocks, parágrafos, exemplos, etc.)
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+  var node;
+  while (node = walker.nextNode()) {
+    if (node.nodeValue.indexOf(ipAntigo) !== -1) {
+      node.nodeValue = node.nodeValue.split(ipAntigo).join(ipNovo);
+    }
+  }
+}
+
+function atualizarStatusIP() {
+  var statusDiv = document.getElementById("ip-status");
+  if (!statusDiv) return;
+  if (currentIP && validarIP(currentIP)) {
+    statusDiv.innerHTML = '<span class="ip-badge"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle" style="width:12px;height:12px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> IP ativo: ' + currentIP + "</span>";
+  } else {
+    statusDiv.innerHTML = "";
+  }
+}
+
+function aplicarIP() {
+  var input = document.getElementById("oci-ip-input");
+  if (!input) return;
+  var ip = input.value.trim();
+
+  if (!ip) {
+    showToast("Digite um IP válido", "error");
+    return;
+  }
+
+  if (!validarIP(ip)) {
+    showToast("IP inválido. Use formato: 203.0.113.10", "error");
+    return;
+  }
+
+  var ipAnterior = currentIP || "SEU_IP_OCI";
+  currentIP = ip;
+  localStorage.setItem(IP_STORAGE_KEY, ip);
+
+  substituirIPNoDocumento(ipAnterior, ip);
+  substituirIPNoDocumento("SEU_IP_OCI", ip);
+
+  atualizarStatusIP();
+  showToast("IP " + ip + " aplicado!", "success");
+}
+
+// ============ TEMA ============
+function toggleTema() {
+  var html = document.documentElement;
+  var isDark = html.classList.toggle("dark");
+  localStorage.setItem(TEMA_STORAGE_KEY, isDark ? "dark" : "light");
+
+  var icon = document.getElementById("icon-tema");
+  var text = document.getElementById("text-tema");
+  if (icon) {
+    icon.setAttribute("data-lucide", isDark ? "moon" : "sun");
+  }
+  if (text) {
+    text.textContent = isDark ? "Escuro" : "Claro";
+  }
+  if (window.lucide) lucide.createIcons();
+}
+
+function initTema() {
+  var saved = localStorage.getItem(TEMA_STORAGE_KEY);
+  var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var isDark = saved === "dark" || (!saved && prefersDark);
+
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+  }
+  var icon = document.getElementById("icon-tema");
+  var text = document.getElementById("text-tema");
+  if (icon) {
+    icon.setAttribute("data-lucide", isDark ? "moon" : "sun");
+  }
+  if (text) {
+    text.textContent = isDark ? "Escuro" : "Claro";
+  }
+}
+
+// ============ UTILITÁRIOS ============
+function showToast(message, type, duration) {
+  type = type || "info";
+  duration = duration || 3000;
+  var container = document.getElementById("toast-container");
+  if (!container) return;
+  var toast = document.createElement("div");
+  toast.className = "toast toast-" + type;
+  var icon = "info";
+  if (type === "success") icon = "check-circle";
+  if (type === "error") icon = "x-circle";
+  toast.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-' + icon + '" style="width:20px;height:20px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg><span>' + message + "</span>";
+  container.appendChild(toast);
+  requestAnimationFrame(function() { toast.classList.add("show"); });
+  setTimeout(function() {
+    toast.classList.remove("show");
+    setTimeout(function() { toast.remove(); }, 400);
+  }, duration);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(function(b) {
+    b.classList.remove("tab-active");
+    b.classList.add("text-slate-600", "dark:text-slate-300", "hover:bg-white/50", "dark:hover:bg-slate-700/50");
+  });
+  document.querySelectorAll(".tab-content").forEach(function(c) { c.classList.add("hidden"); });
+  var content = document.getElementById("content-" + tab);
+  if (content) content.classList.remove("hidden");
+  var activeBtn = document.getElementById("tab-" + tab);
+  if (activeBtn) {
+    activeBtn.classList.remove("text-slate-600", "dark:text-slate-300", "hover:bg-white/50", "dark:hover:bg-slate-700/50");
+    activeBtn.classList.add("tab-active");
+  }
+}
+
+function copyCode(btn) {
+  var block = btn.parentElement;
+  var temp = document.createElement("div");
+  temp.innerHTML = block.innerHTML;
+  var tempBtn = temp.querySelector(".copy-btn");
+  if (tempBtn) tempBtn.remove();
+  var text = temp.innerText.trim();
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = "Copiado!";
+      btn.style.background = "rgba(16,185,129,0.3)";
+      btn.style.color = "#fff";
+      showToast("Código copiado!", "success", 2000);
+      setTimeout(function() {
+        btn.textContent = "Copiar";
+        btn.style.background = "";
+        btn.style.color = "";
+      }, 2000);
+    });
+  } else {
+    // Fallback
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    showToast("Código copiado!", "success", 2000);
+  }
+}
+
+function toggleTrouble(card) {
+  var isActive = card.classList.contains("active");
+  document.querySelectorAll(".trouble-card").forEach(function(c) {
+    c.classList.remove("active");
+    var icon = c.querySelector(".trouble-icon");
+    if (icon) icon.style.transform = "rotate(0deg)";
+  });
+  if (!isActive) {
+    card.classList.add("active");
+    var icon = card.querySelector(".trouble-icon");
+    if (icon) icon.style.transform = "rotate(180deg)";
+  }
+}
+
+// ============ INICIALIZAÇÃO ============
+function initApp() {
+  initTema();
+
+  // Restaura IP salvo
+  if (currentIP && validarIP(currentIP)) {
+    var input = document.getElementById("oci-ip-input");
+    if (input) input.value = currentIP;
+    // Aplica sem toast na inicialização
+    var ipAnterior = "SEU_IP_OCI";
+    substituirIPNoDocumento(ipAnterior, currentIP);
+    atualizarStatusIP();
+  }
+
+  // Enter no input de IP
+  var input = document.getElementById("oci-ip-input");
+  if (input) {
+    input.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") aplicarIP();
+    });
+  }
+
+  if (window.lucide) lucide.createIcons();
+}
+
+// Inicializa quando o DOM estiver pronto
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
+</script>
+</body>
+</html>
