@@ -73,13 +73,171 @@ body{font-family:'Inter',system-ui,sans-serif;}
 .ip-input-wrapper:focus-within{box-shadow:0 0 0 3px rgba(99,102,241,0.3);}
 .ip-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;background:rgba(99,102,241,0.15);color:#6366f1;border:1px solid rgba(99,102,241,0.2);}
 .dark .ip-badge{background:rgba(99,102,241,0.25);color:#a5b4fc;border-color:rgba(99,102,241,0.3);}
+
+/* ===== ESTILOS PARA EXPORTAÇÃO PDF ===== */
+.pdf-modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(8px); z-index: 9998; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.pdf-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.pdf-modal { background: white; border-radius: 24px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: scale(0.95); transition: transform 0.3s; }
+.dark .pdf-modal { background: #1e293b; border: 1px solid #334155; }
+.pdf-modal-overlay.active .pdf-modal { transform: scale(1); }
+/* Container temporário de exportação */
+#pdf-export-container { position: absolute; top: 0; left: 0; width: 1200px; z-index: 99999; background: #ffffff !important; font-family: 'Inter', system-ui, sans-serif; }
+#pdf-export-container * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+#pdf-export-container .glass, #pdf-export-container .glass-card { background: #ffffff !important; border: 1px solid #d1d5db !important; box-shadow: none !important; color: #111827 !important; }
+#pdf-export-container .gradient-text { background: none !important; -webkit-background-clip: initial !important; -webkit-text-fill-color: #4f46e5 !important; color: #4f46e5 !important; }
+#pdf-export-container .tab-btn { background: #f3f4f6 !important; color: #374151 !important; border: 1px solid #d1d5db !important; box-shadow: none !important; }
+#pdf-export-container .tab-active { background: #4f46e5 !important; color: #ffffff !important; }
+#pdf-export-container .code-block { background: #f8fafc !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; }
+#pdf-export-container .trouble-body { max-height: none !important; overflow: visible !important; padding-top: 16px !important; }
+#pdf-export-container .arch-node { transform: none !important; box-shadow: none !important; }
+#pdf-export-container body, #pdf-export-container { background: #ffffff !important; color: #111827 !important; }
+#pdf-export-container h1, #pdf-export-container h2, #pdf-export-container h3, #pdf-export-container h4 { color: #111827 !important; }
+#pdf-export-container p, #pdf-export-container span, #pdf-export-container li { color: #374151 !important; }
+#pdf-export-container .text-slate-500, #pdf-export-container .text-slate-400, #pdf-export-container .dark\:text-slate-400, #pdf-export-container .dark\:text-slate-500 { color: #4b5563 !important; }
+#pdf-export-container .text-slate-600, #pdf-export-container .dark\:text-slate-600 { color: #374151 !important; }
+#pdf-export-container .text-slate-700, #pdf-export-container .dark\:text-slate-700 { color: #1f2937 !important; }
+#pdf-export-container .text-slate-800, #pdf-export-container .dark\:text-slate-800 { color: #111827 !important; }
+#pdf-export-container .text-slate-900, #pdf-export-container .dark\:text-slate-900 { color: #000000 !important; }
+#pdf-export-container .text-slate-300, #pdf-export-container .dark\:text-slate-300 { color: #6b7280 !important; }
+#pdf-export-container .bg-slate-50, #pdf-export-container .dark\:bg-slate-50 { background: #f9fafb !important; }
+#pdf-export-container .bg-slate-100, #pdf-export-container .dark\:bg-slate-100 { background: #f3f4f6 !important; }
+#pdf-export-container .bg-slate-800, #pdf-export-container .dark\:bg-slate-800 { background: #f3f4f6 !important; color: #111827 !important; }
+#pdf-export-container .bg-slate-900, #pdf-export-container .dark\:bg-slate-900 { background: #e5e7eb !important; color: #111827 !important; }
+#pdf-export-container .border-slate-200, #pdf-export-container .dark\:border-slate-200 { border-color: #d1d5db !important; }
+#pdf-export-container .border-slate-700, #pdf-export-container .dark\:border-slate-700 { border-color: #d1d5db !important; }
+#pdf-export-container .border-slate-800, #pdf-export-container .dark\:border-slate-800 { border-color: #9ca3af !important; }
+#pdf-export-container .bg-emerald-50, #pdf-export-container .dark\:bg-emerald-50 { background: #ecfdf5 !important; }
+#pdf-export-container .bg-emerald-100, #pdf-export-container .dark\:bg-emerald-100 { background: #d1fae5 !important; }
+#pdf-export-container .bg-emerald-900, #pdf-export-container .dark\:bg-emerald-900 { background: #d1fae5 !important; }
+#pdf-export-container .text-emerald-400, #pdf-export-container .dark\:text-emerald-400 { color: #059669 !important; }
+#pdf-export-container .text-emerald-500, #pdf-export-container .dark\:text-emerald-500 { color: #059669 !important; }
+#pdf-export-container .text-emerald-600, #pdf-export-container .dark\:text-emerald-600 { color: #047857 !important; }
+#pdf-export-container .text-emerald-700, #pdf-export-container .dark\:text-emerald-700 { color: #065f46 !important; }
+#pdf-export-container .border-emerald-200, #pdf-export-container .dark\:border-emerald-200 { border-color: #a7f3d0 !important; }
+#pdf-export-container .border-emerald-800, #pdf-export-container .dark\:border-emerald-800 { border-color: #6ee7b7 !important; }
+#pdf-export-container .bg-amber-50, #pdf-export-container .dark\:bg-amber-50 { background: #fffbeb !important; }
+#pdf-export-container .bg-amber-100, #pdf-export-container .dark\:bg-amber-100 { background: #fef3c7 !important; }
+#pdf-export-container .bg-amber-900, #pdf-export-container .dark\:bg-amber-900 { background: #fef3c7 !important; }
+#pdf-export-container .text-amber-400, #pdf-export-container .dark\:text-amber-400 { color: #d97706 !important; }
+#pdf-export-container .text-amber-500, #pdf-export-container .dark\:text-amber-500 { color: #b45309 !important; }
+#pdf-export-container .text-amber-600, #pdf-export-container .dark\:text-amber-600 { color: #92400e !important; }
+#pdf-export-container .text-amber-700, #pdf-export-container .dark\:text-amber-700 { color: #78350f !important; }
+#pdf-export-container .border-amber-200, #pdf-export-container .dark\:border-amber-200 { border-color: #fde68a !important; }
+#pdf-export-container .border-amber-800, #pdf-export-container .dark\:border-amber-800 { border-color: #fcd34d !important; }
+#pdf-export-container .bg-rose-50, #pdf-export-container .dark\:bg-rose-50 { background: #fff1f2 !important; }
+#pdf-export-container .bg-rose-100, #pdf-export-container .dark\:bg-rose-100 { background: #ffe4e6 !important; }
+#pdf-export-container .bg-rose-900, #pdf-export-container .dark\:bg-rose-900 { background: #ffe4e6 !important; }
+#pdf-export-container .text-rose-400, #pdf-export-container .dark\:text-rose-400 { color: #e11d48 !important; }
+#pdf-export-container .text-rose-500, #pdf-export-container .dark\:text-rose-500 { color: #be123c !important; }
+#pdf-export-container .text-rose-600, #pdf-export-container .dark\:text-rose-600 { color: #9f1239 !important; }
+#pdf-export-container .text-rose-700, #pdf-export-container .dark\:text-rose-700 { color: #881337 !important; }
+#pdf-export-container .border-rose-200, #pdf-export-container .dark\:border-rose-200 { border-color: #fecdd3 !important; }
+#pdf-export-container .border-rose-800, #pdf-export-container .dark\:border-rose-800 { border-color: #fda4af !important; }
+#pdf-export-container .bg-blue-50, #pdf-export-container .dark\:bg-blue-50 { background: #eff6ff !important; }
+#pdf-export-container .bg-blue-100, #pdf-export-container .dark\:bg-blue-100 { background: #dbeafe !important; }
+#pdf-export-container .bg-blue-900, #pdf-export-container .dark\:bg-blue-900 { background: #dbeafe !important; }
+#pdf-export-container .text-blue-400, #pdf-export-container .dark\:text-blue-400 { color: #2563eb !important; }
+#pdf-export-container .text-blue-600, #pdf-export-container .dark\:text-blue-600 { color: #1d4ed8 !important; }
+#pdf-export-container .text-blue-700, #pdf-export-container .dark\:text-blue-700 { color: #1e40af !important; }
+#pdf-export-container .border-blue-200, #pdf-export-container .dark\:border-blue-200 { border-color: #bfdbfe !important; }
+#pdf-export-container .border-blue-800, #pdf-export-container .dark\:border-blue-800 { border-color: #93c5fd !important; }
+#pdf-export-container .bg-primary-50, #pdf-export-container .dark\:bg-primary-50 { background: #eef2ff !important; }
+#pdf-export-container .bg-primary-100, #pdf-export-container .dark\:bg-primary-100 { background: #e0e7ff !important; }
+#pdf-export-container .bg-primary-900, #pdf-export-container .dark\:bg-primary-900 { background: #e0e7ff !important; }
+#pdf-export-container .text-primary-400, #pdf-export-container .dark\:text-primary-400 { color: #4f46e5 !important; }
+#pdf-export-container .text-primary-500, #pdf-export-container .dark\:text-primary-500 { color: #4338ca !important; }
+#pdf-export-container .text-primary-600, #pdf-export-container .dark\:text-primary-600 { color: #3730a3 !important; }
+#pdf-export-container .border-primary-200, #pdf-export-container .dark\:border-primary-200 { border-color: #c7d2fe !important; }
+#pdf-export-container .border-primary-800, #pdf-export-container .dark\:border-primary-800 { border-color: #a5b4fc !important; }
+#pdf-export-container .bg-purple-50, #pdf-export-container .dark\:bg-purple-50 { background: #faf5ff !important; }
+#pdf-export-container .bg-purple-100, #pdf-export-container .dark\:bg-purple-100 { background: #f3e8ff !important; }
+#pdf-export-container .bg-purple-900, #pdf-export-container .dark\:bg-purple-900 { background: #f3e8ff !important; }
+#pdf-export-container .text-purple-400, #pdf-export-container .dark\:text-purple-400 { color: #9333ea !important; }
+#pdf-export-container .text-purple-500, #pdf-export-container .dark\:text-purple-500 { color: #7e22ce !important; }
+#pdf-export-container .text-purple-600, #pdf-export-container .dark\:text-purple-600 { color: #6b21a8 !important; }
+#pdf-export-container .border-purple-200, #pdf-export-container .dark\:border-purple-200 { border-color: #e9d5ff !important; }
+#pdf-export-container .border-purple-800, #pdf-export-container .dark\:border-purple-800 { border-color: #d8b4fe !important; }
+#pdf-export-container .bg-cyan-50, #pdf-export-container .dark\:bg-cyan-50 { background: #ecfeff !important; }
+#pdf-export-container .bg-cyan-100, #pdf-export-container .dark\:bg-cyan-100 { background: #cffafe !important; }
+#pdf-export-container .bg-cyan-900, #pdf-export-container .dark\:bg-cyan-900 { background: #cffafe !important; }
+#pdf-export-container .text-cyan-400, #pdf-export-container .dark\:text-cyan-400 { color: #0891b2 !important; }
+#pdf-export-container .text-cyan-500, #pdf-export-container .dark\:text-cyan-500 { color: #0e7490 !important; }
+#pdf-export-container .text-cyan-600, #pdf-export-container .dark\:text-cyan-600 { color: #155e75 !important; }
+#pdf-export-container .text-cyan-700, #pdf-export-container .dark\:text-cyan-700 { color: #164e63 !important; }
+#pdf-export-container .border-cyan-200, #pdf-export-container .dark\:border-cyan-200 { border-color: #a5f3fc !important; }
+#pdf-export-container .border-cyan-800, #pdf-export-container .dark\:border-cyan-800 { border-color: #67e8f9 !important; }
+#pdf-export-container .bg-violet-50, #pdf-export-container .dark\:bg-violet-50 { background: #f5f3ff !important; }
+#pdf-export-container .bg-violet-100, #pdf-export-container .dark\:bg-violet-100 { background: #ede9fe !important; }
+#pdf-export-container .bg-violet-900, #pdf-export-container .dark\:bg-violet-900 { background: #ede9fe !important; }
+#pdf-export-container .text-violet-400, #pdf-export-container .dark\:text-violet-400 { color: #7c3aed !important; }
+#pdf-export-container .text-violet-500, #pdf-export-container .dark\:text-violet-500 { color: #6d28d9 !important; }
+#pdf-export-container .text-violet-600, #pdf-export-container .dark\:text-violet-600 { color: #5b21b6 !important; }
+#pdf-export-container .border-violet-200, #pdf-export-container .dark\:border-violet-200 { border-color: #ddd6fe !important; }
+#pdf-export-container .border-violet-800, #pdf-export-container .dark\:border-violet-800 { border-color: #c4b5fd !important; }
+#pdf-export-container .bg-indigo-50, #pdf-export-container .dark\:bg-indigo-50 { background: #eef2ff !important; }
+#pdf-export-container .bg-indigo-100, #pdf-export-container .dark\:bg-indigo-100 { background: #e0e7ff !important; }
+#pdf-export-container .bg-indigo-900, #pdf-export-container .dark\:bg-indigo-900 { background: #e0e7ff !important; }
+#pdf-export-container .text-indigo-400, #pdf-export-container .dark\:text-indigo-400 { color: #4f46e5 !important; }
+#pdf-export-container .text-indigo-500, #pdf-export-container .dark\:text-indigo-500 { color: #4338ca !important; }
+#pdf-export-container .text-indigo-600, #pdf-export-container .dark\:text-indigo-600 { color: #3730a3 !important; }
+#pdf-export-container .border-indigo-200, #pdf-export-container .dark\:border-indigo-200 { border-color: #c7d2fe !important; }
+#pdf-export-container .border-indigo-800, #pdf-export-container .dark\:border-indigo-800 { border-color: #a5b4fc !important; }
+#pdf-export-container .bg-yellow-50, #pdf-export-container .dark\:bg-yellow-50 { background: #fefce8 !important; }
+#pdf-export-container .bg-yellow-100, #pdf-export-container .dark\:bg-yellow-100 { background: #fef9c3 !important; }
+#pdf-export-container .bg-yellow-900, #pdf-export-container .dark\:bg-yellow-900 { background: #fef9c3 !important; }
+#pdf-export-container .text-yellow-400, #pdf-export-container .dark\:text-yellow-400 { color: #ca8a04 !important; }
+#pdf-export-container .text-yellow-500, #pdf-export-container .dark\:text-yellow-500 { color: #a16207 !important; }
+#pdf-export-container .text-yellow-600, #pdf-export-container .dark\:text-yellow-600 { color: #854d0e !important; }
+#pdf-export-container .text-yellow-700, #pdf-export-container .dark\:text-yellow-700 { color: #713f12 !important; }
+#pdf-export-container .border-yellow-200, #pdf-export-container .dark\:border-yellow-200 { border-color: #fde047 !important; }
+#pdf-export-container .border-yellow-800, #pdf-export-container .dark\:border-yellow-800 { border-color: #facc15 !important; }
+#pdf-export-container .bg-orange-50, #pdf-export-container .dark\:bg-orange-50 { background: #fff7ed !important; }
+#pdf-export-container .bg-orange-100, #pdf-export-container .dark\:bg-orange-100 { background: #ffedd5 !important; }
+#pdf-export-container .bg-orange-900, #pdf-export-container .dark\:bg-orange-900 { background: #ffedd5 !important; }
+#pdf-export-container .text-orange-400, #pdf-export-container .dark\:text-orange-400 { color: #ea580c !important; }
+#pdf-export-container .text-orange-500, #pdf-export-container .dark\:text-orange-500 { color: #c2410c !important; }
+#pdf-export-container .text-orange-600, #pdf-export-container .dark\:text-orange-600 { color: #9a3412 !important; }
+#pdf-export-container .text-orange-700, #pdf-export-container .dark\:text-orange-700 { color: #7c2d12 !important; }
+#pdf-export-container .border-orange-200, #pdf-export-container .dark\:border-orange-200 { border-color: #fed7aa !important; }
+#pdf-export-container .border-orange-800, #pdf-export-container .dark\:border-orange-800 { border-color: #fdba74 !important; }
+#pdf-export-container .bg-teal-50, #pdf-export-container .dark\:bg-teal-50 { background: #f0fdfa !important; }
+#pdf-export-container .bg-teal-100, #pdf-export-container .dark\:bg-teal-100 { background: #ccfbf1 !important; }
+#pdf-export-container .bg-teal-900, #pdf-export-container .dark\:bg-teal-900 { background: #ccfbf1 !important; }
+#pdf-export-container .text-teal-400, #pdf-export-container .dark\:text-teal-400 { color: #0d9488 !important; }
+#pdf-export-container .text-teal-500, #pdf-export-container .dark\:text-teal-500 { color: #0f766e !important; }
+#pdf-export-container .text-teal-600, #pdf-export-container .dark\:text-teal-600 { color: #115e59 !important; }
+#pdf-export-container .border-teal-200, #pdf-export-container .dark\:border-teal-200 { border-color: #99f6e4 !important; }
+#pdf-export-container .border-teal-800, #pdf-export-container .dark\:border-teal-800 { border-color: #5eead4 !important; }
+/* Cards com gradiente colorido: forçar texto escuro legível */
+#pdf-export-container [class*="bg-gradient-to-br"] { background: #f3f4f6 !important; border: 1px solid #d1d5db !important; }
+#pdf-export-container [class*="bg-gradient-to-br"] * { color: #111827 !important; }
+#pdf-export-container [class*="bg-gradient-to-r"] { background: #f3f4f6 !important; border: 1px solid #d1d5db !important; }
+#pdf-export-container [class*="bg-gradient-to-r"] * { color: #111827 !important; }
+#pdf-export-container [class*="from-emerald-500"] { background: #ecfdf5 !important; border-color: #a7f3d0 !important; }
+#pdf-export-container [class*="from-amber-500"] { background: #fffbeb !important; border-color: #fde68a !important; }
+#pdf-export-container [class*="from-rose-500"] { background: #fff1f2 !important; border-color: #fecdd3 !important; }
+#pdf-export-container [class*="from-primary-500"] { background: #eef2ff !important; border-color: #c7d2fe !important; }
+#pdf-export-container [class*="from-purple-500"] { background: #faf5ff !important; border-color: #e9d5ff !important; }
+#pdf-export-container [class*="from-cyan-500"] { background: #ecfeff !important; border-color: #a5f3fc !important; }
+#pdf-export-container [class*="from-orange-500"] { background: #fff7ed !important; border-color: #fed7aa !important; }
+#pdf-export-container [class*="from-blue-500"] { background: #eff6ff !important; border-color: #bfdbfe !important; }
+#pdf-export-container [class*="from-violet-500"] { background: #f5f3ff !important; border-color: #ddd6fe !important; }
+#pdf-export-container [class*="from-indigo-500"] { background: #eef2ff !important; border-color: #c7d2fe !important; }
+#pdf-export-container [class*="from-pink-500"] { background: #fdf2f8 !important; border-color: #fbcfe8 !important; }
+#pdf-export-container .copy-btn { display: none !important; }
+#pdf-export-container .no-pdf { display: none !important; }
+#pdf-export-container a { color: #4f46e5 !important; text-decoration: underline !important; }
+#pdf-export-container .status-dot { display: none !important; }
+#pdf-export-container svg[class*="animate-"] { animation: none !important; }
+
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-purple-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors duration-500">
 
-<div id="toast-container" class="toast-container"></div>
+<div id="toast-container" class="toast-container no-pdf"></div>
 
-<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0 no-pdf">
   <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary-400/15 rounded-full blur-[100px] animate-float"></div>
   <div class="absolute top-1/3 -left-32 w-[400px] h-[400px] bg-accent-400/10 rounded-full blur-[100px] animate-float" style="animation-delay:2s"></div>
   <div class="absolute -bottom-32 right-1/4 w-[450px] h-[450px] bg-purple-400/10 rounded-full blur-[100px] animate-float" style="animation-delay:4s"></div>
@@ -108,7 +266,7 @@ body{font-family:'Inter',system-ui,sans-serif;}
   </div>
 
   <!-- CONFIGURADOR DE IP OCI -->
-  <div class="mt-8 max-w-xl mx-auto">
+  <div class="mt-8 max-w-xl mx-auto no-pdf">
     <div class="glass rounded-2xl p-1.5 ip-input-wrapper">
       <div class="flex flex-col sm:flex-row gap-2">
         <div class="flex-1 relative">
@@ -132,6 +290,14 @@ body{font-family:'Inter',system-ui,sans-serif;}
     <p class="text-xs text-slate-400 dark:text-slate-500 mt-2 text-center">Dica: insira seu IP acima para atualizar todos os comandos e links automaticamente.</p>
     <div id="ip-status" class="mt-2 flex justify-center gap-2 flex-wrap"></div>
   </div>
+  <!-- BOTÃO EXPORTAR PDF -->
+  <div class="mt-6 no-pdf">
+    <button onclick="abrirModalPDF()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-rose-500 to-orange-500 text-white text-sm font-bold shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40 hover:-translate-y-0.5 transition-all">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+      Exportar PDF
+    </button>
+  </div>
+
 </header>
 
 <div class="glass rounded-2xl p-2 mb-10 flex gap-2 overflow-x-auto scrollbar-hide sticky top-4 z-50 shadow-lg">
@@ -1949,13 +2115,85 @@ EOF</div>
 
 <footer class="mt-16 text-center pb-8">
   <p class="text-lg font-bold text-slate-700 dark:text-slate-300 mb-4">Equipe G9-BR-TEAM-20</p>
-  <div class="flex flex-wrap justify-center gap-2 mb-6">
-    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Fabio C. Zinetti</span>
-    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">João P. R. Deodato</span>
-    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Edson H. F. da Silva</span>
-    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Luciano R. da Silva</span>
-    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Rodrigo M. Veiga</span>
-    <span class="px-3 py-1 rounded-full bg-white/60 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">André Neves Xavier</span>
+  <div class="flex flex-wrap justify-center gap-4 mb-8">
+    <!-- Fabio -->
+    <div class="glass-card rounded-2xl p-4 text-center" style="min-width:160px">
+      <p class="font-bold text-slate-800 dark:text-slate-100 text-sm">Fabio C. Zinetti</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Data Scientist</p>
+      <div class="flex justify-center gap-3">
+        <a href="https://www.linkedin.com/in/fabiozinetti" target="_blank" class="text-slate-400 hover:text-[#0A66C2] transition-colors" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/fabinhoz" target="_blank" class="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors" title="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>
+    <!-- João -->
+    <div class="glass-card rounded-2xl p-4 text-center" style="min-width:160px">
+      <p class="font-bold text-slate-800 dark:text-slate-100 text-sm">João P. R. Deodato</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Data Analyst</p>
+      <div class="flex justify-center gap-3">
+        <a href="https://www.linkedin.com/in/jpdeodato" target="_blank" class="text-slate-400 hover:text-[#0A66C2] transition-colors" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/jpdeodato" target="_blank" class="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors" title="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>
+    <!-- Edson -->
+    <div class="glass-card rounded-2xl p-4 text-center" style="min-width:160px">
+      <p class="font-bold text-slate-800 dark:text-slate-100 text-sm">Edson H. F. da Silva</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Data Analyst</p>
+      <div class="flex justify-center gap-3">
+        <a href="https://www.linkedin.com/in/henriquesilvatech" target="_blank" class="text-slate-400 hover:text-[#0A66C2] transition-colors" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/86HenriqueSilva" target="_blank" class="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors" title="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>
+    <!-- Luciano -->
+    <div class="glass-card rounded-2xl p-4 text-center" style="min-width:160px">
+      <p class="font-bold text-slate-800 dark:text-slate-100 text-sm">Luciano R. da Silva</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Back-End</p>
+      <div class="flex justify-center gap-3">
+        <a href="https://www.linkedin.com/in/luciano-ribeiro-da-silva-26a2802a6" target="_blank" class="text-slate-400 hover:text-[#0A66C2] transition-colors" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/siilverado" target="_blank" class="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors" title="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>
+    <!-- Rodrigo -->
+    <div class="glass-card rounded-2xl p-4 text-center" style="min-width:160px">
+      <p class="font-bold text-slate-800 dark:text-slate-100 text-sm">Rodrigo M. Veiga</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Back-End</p>
+      <div class="flex justify-center gap-3">
+        <a href="https://www.linkedin.com/" target="_blank" class="text-slate-400 hover:text-[#0A66C2] transition-colors" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/" target="_blank" class="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors" title="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>
+    <!-- André -->
+    <div class="glass-card rounded-2xl p-4 text-center" style="min-width:160px">
+      <p class="font-bold text-slate-800 dark:text-slate-100 text-sm">André N. Xavier</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Back-End</p>
+      <div class="flex justify-center gap-3">
+        <a href="https://www.linkedin.com/" target="_blank" class="text-slate-400 hover:text-[#0A66C2] transition-colors" title="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/" target="_blank" class="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors" title="GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+      </div>
+    </div>
   </div>
   <p class="text-sm text-slate-500 dark:text-slate-500 font-medium">FinSight AI v6.0 — Hackathon OCI 2026</p>
   <span class="inline-block bg-white/60 dark:bg-slate-800/60 backdrop-blur px-4 py-1.5 rounded-full text-xs font-semibold text-primary-600 dark:text-primary-400 mt-3 border border-primary-100 dark:border-primary-900/20">Oracle Cloud Infrastructure</span>
@@ -2145,7 +2383,178 @@ function toggleTrouble(card) {
   }
 }
 
-// ============ INICIALIZAÇÃO ============
+
+// ============ EXPORTADOR PDF ============
+function abrirModalPDF() {
+  var modal = document.getElementById("pdf-modal");
+  if (modal) modal.classList.add("active");
+}
+
+function fecharModalPDF() {
+  var modal = document.getElementById("pdf-modal");
+  if (modal) modal.classList.remove("active");
+}
+
+function exportarPDF(modo) {
+  fecharModalPDF();
+
+  var activeTab = document.querySelector(".tab-btn.tab-active");
+  var activeTabId = activeTab ? activeTab.id.replace("tab-", "") : "visao";
+
+  // Criar iframe invisível
+  var iframe = document.createElement("iframe");
+  iframe.style.cssText = "position:fixed;top:-10000px;left:-10000px;width:1200px;height:800px;border:none;";
+  document.body.appendChild(iframe);
+
+  var doc = iframe.contentWindow.document;
+  doc.open();
+
+  // Escrever HTML completo para impressão
+  doc.write('<!DOCTYPE html>');
+  doc.write('<html><head><meta charset="utf-8">');
+  doc.write('<title>FinSight AI - Documentação</title>');
+  doc.write('<style>');
+  doc.write('@page { size: A4; margin: 15mm; }');
+  doc.write('body{font-family:Inter,system-ui,-apple-system,Arial,sans-serif;background:#fff;color:#1e293b;padding:0;margin:0;line-height:1.6;}');
+  doc.write('h1{font-size:28px;font-weight:900;margin:0 0 8px;color:#1e293b;}');
+  doc.write('h2{font-size:20px;font-weight:800;margin:30px 0 16px;padding-bottom:10px;border-bottom:3px solid #6366f1;color:#1e293b;page-break-after:avoid;}');
+  doc.write('h3{font-size:16px;font-weight:700;margin:20px 0 10px;color:#334155;page-break-after:avoid;}');
+  doc.write('p{font-size:13px;margin:0 0 10px;color:#475569;}');
+  doc.write('ul,ol{font-size:13px;margin:0 0 12px;padding-left:20px;color:#475569;}');
+  doc.write('li{margin-bottom:4px;}');
+  doc.write('code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:12px;font-family:monospace;color:#0f172a;}');
+  doc.write('pre{background:#0f172a;color:#e2e8f0;padding:16px;border-radius:12px;overflow-x:auto;font-size:12px;font-family:monospace;margin:12px 0;white-space:pre-wrap;word-break:break-word;}');
+  doc.write('table{width:100%;border-collapse:collapse;font-size:12px;margin:12px 0;}');
+  doc.write('th,td{border:1px solid #cbd5e1;padding:8px 10px;text-align:left;}');
+  doc.write('th{background:#f8fafc;font-weight:700;color:#1e293b;}');
+  doc.write('td{color:#475569;}');
+  doc.write('.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:16px;page-break-inside:avoid;}');
+  doc.write('.card-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:10px;display:flex;align-items:center;gap:8px;}');
+  doc.write('.badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-right:6px;margin-bottom:6px;}');
+  doc.write('.badge-green{background:#d1fae5;color:#065f46;}');
+  doc.write('.badge-amber{background:#fef3c7;color:#92400e;}');
+  doc.write('.badge-rose{background:#ffe4e6;color:#881337;}');
+  doc.write('.badge-blue{background:#dbeafe;color:#1e40af;}');
+  doc.write('.badge-purple{background:#f3e8ff;color:#6b21a8;}');
+  doc.write('.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}');
+  doc.write('.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}');
+  doc.write('.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}');
+  doc.write('.metric{text-align:center;padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;}');
+  doc.write('.metric-value{font-size:28px;font-weight:900;color:#1e293b;}');
+  doc.write('.metric-label{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}');
+  doc.write('.step{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start;}');
+  doc.write('.step-num{width:28px;height:28px;border-radius:8px;background:#e0e7ff;color:#4338ca;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}');
+  doc.write('.step-title{font-weight:700;font-size:14px;color:#334155;margin-bottom:2px;}');
+  doc.write('.step-desc{font-size:12px;color:#64748b;}');
+  doc.write('.endpoint{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#f8fafc;border-radius:10px;border-left:4px solid #6366f1;margin-bottom:10px;}');
+  doc.write('.method{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:800;}');
+  doc.write('.method-get{background:#d1fae5;color:#065f46;}');
+  doc.write('.method-post{background:#dbeafe;color:#1e40af;}');
+  doc.write('.method-delete{background:#ffe4e6;color:#881337;}');
+  doc.write('.profile-card{padding:16px;border-radius:12px;text-align:center;color:#fff;margin-bottom:12px;}');
+  doc.write('.profile-s{background:linear-gradient(135deg,#10b981,#059669);}');
+  doc.write('.profile-o{background:linear-gradient(135deg,#f59e0b,#d97706);}');
+  doc.write('.profile-r{background:linear-gradient(135deg,#ef4444,#dc2626);}');
+  doc.write('.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#1e40af;}');
+  doc.write('.warning{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#92400e;}');
+  doc.write('.danger{background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13px;color:#881337;}');
+  doc.write('.header-doc{text-align:center;padding:30px 20px;border-bottom:3px solid #6366f1;margin-bottom:30px;}');
+  doc.write('.header-doc h1{background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:36px;}');
+  doc.write('.header-doc p{color:#64748b;font-size:14px;margin:6px 0 0;}');
+  doc.write('.footer-doc{text-align:center;padding:20px;border-top:1px solid #e2e8f0;margin-top:40px;font-size:11px;color:#94a3b8;}');
+  doc.write('a{color:#4f46e5;text-decoration:underline;}');
+  doc.write('strong{color:#1e293b;}');
+  doc.write('em{color:#475569;}');
+  doc.write('img{max-width:100%;height:auto;}');
+  doc.write('svg{display:none;}');
+  doc.write('</style>');
+  doc.write('</head><body>');
+
+  // Header
+  doc.write('<div class="header-doc">');
+  doc.write('<h1>FinSight AI</h1>');
+  doc.write('<p>Documentação — Assistente Inteligente de Saúde Financeira</p>');
+  doc.write('<p style="font-size:12px;color:#94a3b8;margin-top:4px;">v6.0 | Equipe G9-BR-TEAM-20 | Hackathon OCI 2026</p>');
+  doc.write('</div>');
+
+  // Função para extrair conteúdo de uma aba
+  function extrairAba(tabId, titulo) {
+    var el = document.getElementById("content-" + tabId);
+    if (!el) return "";
+
+    var html = '<h2>' + titulo + '</h2>';
+
+    // Processar cada card
+    var cards = el.querySelectorAll(".glass-card, .arch-node, .endpoint-card, .trouble-card, .metric-card");
+    if (cards.length === 0) {
+      // Fallback: extrair todo o HTML da aba
+      var clone = el.cloneNode(true);
+      clone.classList.remove("hidden");
+      clone.style.display = "block";
+      clone.querySelectorAll(".no-pdf, .copy-btn, .status-dot").forEach(function(el) { if(el.parentNode) el.parentNode.removeChild(el); });
+      clone.querySelectorAll(".trouble-card").forEach(function(c) { c.classList.add("active"); });
+      clone.querySelectorAll(".trouble-body").forEach(function(tb) { tb.style.maxHeight = "none"; tb.style.overflow = "visible"; tb.style.paddingTop = "12px"; });
+      html += clone.innerHTML;
+      return html;
+    }
+
+    cards.forEach(function(card) {
+      var clone = card.cloneNode(true);
+      clone.querySelectorAll(".copy-btn, .no-pdf, .status-dot, svg").forEach(function(el) { if(el.parentNode) el.parentNode.removeChild(el); });
+      clone.querySelectorAll(".trouble-body").forEach(function(tb) { tb.style.maxHeight = "none"; tb.style.overflow = "visible"; tb.style.paddingTop = "12px"; });
+
+      // Simplificar classes para impressão
+      clone.className = "card";
+      html += clone.outerHTML;
+    });
+
+    return html;
+  }
+
+  if (modo === "completo") {
+    var secoes = [
+      ["visao", "1. Visão Geral"],
+      ["regras", "2. Regras de Negócio"],
+      ["arquitetura", "3. Arquitetura"],
+      ["oci-vm", "4. VM OCI"],
+      ["instalacao", "5. Instalação"],
+      ["api", "6. API REST"],
+      ["guia", "7. Guia de Uso"],
+      ["troubleshoot", "8. Problemas e Soluções"]
+    ];
+    secoes.forEach(function(s) {
+      doc.write(extrairAba(s[0], s[1]));
+    });
+  } else {
+    var tabBtn = document.getElementById("tab-" + activeTabId);
+    var titulo = tabBtn ? tabBtn.innerText.trim() : "Documentação";
+    doc.write(extrairAba(activeTabId, titulo));
+  }
+
+  // Footer
+  doc.write('<div class="footer-doc">');
+  doc.write('FinSight AI v6.0 — Equipe G9-BR-TEAM-20 — Hackathon OCI 2026<br>');
+  doc.write('Oracle Cloud Infrastructure');
+  doc.write('</div>');
+
+  doc.write('</body></html>');
+  doc.close();
+
+  // Aguardar renderização e imprimir
+  setTimeout(function() {
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+
+    // Remover iframe após um tempo
+    setTimeout(function() {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
+    }, 2000);
+  }, 800);
+
+  showToast("Caixa de diálogo de impressão aberta! Selecione 'Salvar como PDF'", "success", 6000);
+}// ============ INICIALIZAÇÃO ============
 function initApp() {
   initTema();
 
@@ -2168,6 +2577,14 @@ function initApp() {
   }
 
   if (window.lucide) lucide.createIcons();
+
+  // Atalho Ctrl+P / Cmd+P para exportar PDF
+  document.addEventListener("keydown", function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+      e.preventDefault();
+      abrirModalPDF();
+    }
+  });
 }
 
 // Inicializa quando o DOM estiver pronto
@@ -2177,5 +2594,48 @@ if (document.readyState === "loading") {
   initApp();
 }
 </script>
+
+<!-- MODAL EXPORTAR PDF -->
+<div id="pdf-modal" class="pdf-modal-overlay no-pdf" onclick="if(event.target===this)fecharModalPDF()">
+  <div class="pdf-modal">
+    <div class="text-center mb-6">
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Exportar Documentação</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Escolha o formato do relatório PDF</p>
+    </div>
+
+    <div class="space-y-3">
+      <button onclick="exportarPDF('atual')" class="w-full p-4 rounded-2xl bg-gradient-to-r from-primary-500 to-purple-600 text-white hover:shadow-lg hover:shadow-primary-500/25 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <div>
+            <p class="font-bold text-sm">Aba Atual</p>
+            <p class="text-xs opacity-80">Exporta apenas a seção que você está visualizando agora</p>
+          </div>
+        </div>
+      </button>
+
+      <button onclick="exportarPDF('completo')" class="w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
+          </div>
+          <div>
+            <p class="font-bold text-sm">Documentação Completa</p>
+            <p class="text-xs opacity-80">Exporta todas as abas em um único documento (recomendado)</p>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <button onclick="fecharModalPDF()" class="mt-4 w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-all">
+      Cancelar
+    </button>
+  </div>
+</div>
 </body>
 </html>
