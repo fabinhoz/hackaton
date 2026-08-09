@@ -165,7 +165,7 @@ curl -X POST http://SEU_IP_OCI/analise-financeira   -H "Content-Type: applicatio
 | **Fabio C. Zinetti** | [LinkedIn](https://www.linkedin.com/in/fabiozinetti) | [GitHub](https://github.com/fabinhoz) | @fabinhoz |
 | **João P. R. Deodato** | [LinkedIn](https://www.linkedin.com/in/jpdeodato) | [GitHub](https://github.com/jpdeodato) | @jp_deodato |
 | **Edson H. F. da Silva** | [LinkedIn](https://www.linkedin.com/in/henriquesilvatech) | [GitHub](https://github.com/86HenriqueSilva) | @henrique.silva2916 |
-| **Luciano R. da Silva** | [LinkedIn](https://www.linkedin.com/) | [GitHub](https://github.com/) | @siilverado |
+| **Luciano R. da Silva** | [LinkedIn](https://www.linkedin.com/luciano-ribeiro-da-silva-26a2802a6) | [GitHub](https://github.com/siilverado) | @siilverado |
 | **Rodrigo M. Veiga** | [LinkedIn](https://www.linkedin.com/) | [GitHub](https://github.com/) | @rodrigoveiga93 |
 | **André N. Xavier** | [LinkedIn](https://www.linkedin.com/) | [GitHub](https://github.com/) | @andrepgupgrade |
 
